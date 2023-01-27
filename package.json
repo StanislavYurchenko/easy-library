@@ -6,8 +6,8 @@
     "nx": "nx",
     "build:client": "npx nx build client-angular ",
     "build:server": "npx nx build server-nest",
-    "serve:client": "npx nx serve client-angular --port 3000",
-    "serve:server": "npx nx serve server-nest --port 3333",
+    "serve:client": "npx nx serve client-angular",
+    "serve:server": "npx nx serve server-nest",
     "lint:client": "npx nx lint client-angular",
     "lint:server": "npx nx lint server-nest",
     "clearCache": "rm -rf ./node_modules/.cache/nx"
