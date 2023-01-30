@@ -14,7 +14,6 @@ export class UserController {
   ) {
     try {
       const newUser = await this.userService.createUser(createUserDto);
-console.log(process.env.test);
 
       return response.status(HttpStatus.CREATED).json({
         message: 'User has been created successfully',

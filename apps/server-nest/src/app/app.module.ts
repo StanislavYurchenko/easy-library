@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserController } from './controller/user/user.controller';
-import { UserSchema } from './schema/user.schema';
 import { UserService } from './service/user/user.service';
+import { mongoConfig, mongoModels, mongoUrl } from './app.config'; 
 
 @Module({
   imports: [
-    ConfigModule.forRoot({}),
-    MongooseModule.forRoot(process.env.MONGO_DB_URL as string, { dbName: 'easylibrarydb'}),
-    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
+    MongooseModule.forRoot(mongoUrl, mongoConfig),
+    MongooseModule.forFeature(mongoModels),
   ],
   controllers: [AppController, UserController],
   providers: [AppService, UserService],

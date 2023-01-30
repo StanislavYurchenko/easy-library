@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "nx": "nx",
-    "build:client": "npx nx build client-angular ",
+    "build:client": "npx nx build client-angular",
     "build:server": "npx nx build server-nest",
     "serve:client": "npx nx serve client-angular",
     "serve:server": "npx nx serve server-nest",

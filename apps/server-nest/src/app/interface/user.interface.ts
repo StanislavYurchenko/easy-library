@@ -1,7 +1,4 @@
 import { Document } from 'mongoose';
+import {User} from '../../../../../libs/api-interfaces1/user.interface'
 
-export interface IUser extends Document {
-  readonly name: string;
-  readonly email: string;
-  readonly phone?: string;
-}
+export interface IUser extends Document, Omit<User, 'id'> { };
