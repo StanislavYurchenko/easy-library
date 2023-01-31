@@ -14,7 +14,14 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {},
+    "paths": {
+      "@libs/api-interface": ["libs/api-interface/index.ts"],
+      "@server-nest/controller": ["apps/server-nest/src/app/controller/index.ts"],
+      "@server-nest/dto": ["apps/server-nest/src/app/dto/index.ts"],
+      "@server-nest/interface": ["apps/server-nest/src/app/interface/index.ts"],
+      "@server-nest/schema": ["apps/server-nest/src/app/schema/index.ts"],
+      "@server-nest/service": ["apps/server-nest/src/app/service/index.ts"],
+    },
     "strict": true
   },
   "exclude": ["node_modules", "tmp"]

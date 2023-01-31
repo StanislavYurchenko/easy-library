@@ -1,4 +1,4 @@
 import { Document } from 'mongoose';
-import {User} from '../../../../../libs/api-interfaces1/user.interface'
+import { User } from '@libs/api-interface';
 
-export interface IUser extends Document, Omit<User, 'id'> { };
+export interface IUser extends Document<string, unknown, User>, Omit<User, 'id'> { };

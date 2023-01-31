@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { UserController } from '@server-nest/controller';
+import { UserService } from '@server-nest/service';
+import { mongoConfig, mongoModels, mongoUrl } from './app.config'; 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserController } from './controller/user/user.controller';
-import { UserService } from './service/user/user.service';
-import { mongoConfig, mongoModels, mongoUrl } from './app.config'; 
 
 @Module({
   imports: [

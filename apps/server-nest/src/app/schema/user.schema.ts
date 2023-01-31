@@ -1,8 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { User } from '@libs/api-interface';
+import { defaultSchemaOptions } from './config';
 
-
-@Schema({ versionKey: false })
-export class User {
+@Schema({
+  ...defaultSchemaOptions,
+})
+class UserEntity implements User {
+  id!: string;
+  
   @Prop({ required: true })
   name!: string;
 
@@ -15,4 +20,4 @@ export class User {
   @Prop()
   phone?: string;
 }
-export const UserSchema = SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(UserEntity);
