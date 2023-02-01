@@ -20,4 +20,5 @@ class UserEntity implements User {
   @Prop()
   phone?: string;
 }
+
 export const UserSchema = SchemaFactory.createForClass(UserEntity);
