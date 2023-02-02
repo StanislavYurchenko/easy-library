@@ -5,5 +5,3 @@ export const mongoConfig: MongooseModuleOptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 };
-
-export const mongoUrl = process.env.MONGO_DB_URL as string;
