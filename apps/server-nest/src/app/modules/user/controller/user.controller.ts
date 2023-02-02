@@ -12,8 +12,8 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ErrorRes, UserRes, UsersRes } from '@libs/api-interface';
-import { CreateUserDto, UpdateUserDto } from '@server-nest/dto';
-import { UserService } from '@server-nest/service';
+import { CreateUserDto, UpdateUserDto } from '../dto';
+import { UserService } from '../service';
 
 @Controller('user')
 export class UserController {
