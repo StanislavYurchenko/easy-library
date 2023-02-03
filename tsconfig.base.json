@@ -3,23 +3,28 @@
   "compilerOptions": {
     "rootDir": ".",
     "sourceMap": true,
+    "inlineSources": false,
+    "inlineSourceMap": false,
     "declaration": false,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": ["es2017", "dom", "es2018.promise"],
     "skipLibCheck": true,
+    "strictNullChecks": true,
     "skipDefaultLibCheck": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "@libs/api-interface": ["libs/api-interface/index.ts"],
-      "@server-nest/configs": ["apps/server-nest/src/app/configs/index.ts"],
-      "@server-nest/modules": ["apps/server-nest/src/app/modules/index.ts"]
+      "@libs/api-interface": ["libs/api-interface/"],
+      "@server-nest/configs": ["apps/server-nest/src/app/configs/"],
+      "@server-nest/modules": ["apps/server-nest/src/app/modules/"]
     },
     "strict": true
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "tmp", "dist"]
 }

@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { mongoConfig } from './app.config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import {UserModule} from "./modules/user/user.module";
-import {BooksModule} from "./modules/books/books.module";
-import {ConfigModule, ConfigService} from "@nestjs/config";
+import { BooksModule, UserModule } from './modules';
 
 @Module({
   imports: [
@@ -14,8 +13,8 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGO_DB_URL'),
-          ...mongoConfig,
-        }),
+        ...mongoConfig,
+      }),
       inject: [ConfigService],
     }),
     UserModule,
@@ -25,4 +24,3 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
   providers: [AppService],
 })
 export class AppModule {}
-

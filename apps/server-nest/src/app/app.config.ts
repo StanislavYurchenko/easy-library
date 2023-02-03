@@ -1,4 +1,4 @@
-import { MongooseModuleOptions } from "@nestjs/mongoose";
+import { MongooseModuleOptions } from '@nestjs/mongoose';
 
 export const mongoConfig: MongooseModuleOptions = {
   dbName: 'easylibrarydb',

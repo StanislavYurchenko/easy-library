@@ -10,13 +10,9 @@ export class AppComponent {
   title = 'client-angular';
   dataFromServer = '';
 
-  constructor(
-    private readonly http: HttpClient,
-  ) { }
+  constructor(private readonly http: HttpClient) {}
 
   getData() {
-    this.http
-      .get<{ message: string }>('/api')
-      .subscribe(({ message }) => (this.dataFromServer = message));
+    this.http.get<{ message: string }>('/api').subscribe(({ message }) => (this.dataFromServer = message));
   }
 }
