@@ -176,19 +176,19 @@
   },
  "overrides": [
    {
-    "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-    "rules": {
-      "@nrwl/nx/enforce-module-boundaries": [
-        "error",
-        {
-          "enforceBuildableLibDependency": true,
-          "allow": [],
-          "depConstraints": [
-            {
-              "sourceTag": "*",
-              "onlyDependOnLibsWithTags": ["*"]
-            }
-          ]
+     "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+     "rules": {
+       "@nrwl/nx/enforce-module-boundaries": [
+         "error",
+         {
+           "enforceBuildableLibDependency": true,
+           "allow": [],
+           "depConstraints": [
+             {
+               "sourceTag": "*",
+               "onlyDependOnLibsWithTags": ["*"]
+             }
+           ]
          }
        ]
      }
@@ -204,11 +204,27 @@
      "rules": {}
    },
    {
+     "files": ["*component.html", "index.html"],
+     "extends": [
+       "plugin:@typescript-eslint/recommended",
+       "plugin:@angular-eslint/recommended",
+       "plugin:prettier/recommended"
+     ],
+     "rules": {
+       "import/namespace": "off",
+       "strict": "off",
+       "import/first": "off",
+       "lines-around-directive": "off",
+       "intent": "off",
+       "prettier/prettier": "off"
+     }
+   },
+   {
      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
      "env": {
        "jest": true
      },
      "rules": {}
    }
-  ]
+ ]
 }
