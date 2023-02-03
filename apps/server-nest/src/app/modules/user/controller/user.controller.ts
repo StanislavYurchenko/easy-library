@@ -1,15 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpStatus,
-  Logger,
-  Param,
-  Post,
-  Put,
-  Res,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { ErrorRes, UserRes, UsersRes } from '@libs/api-interface';
 import { CreateUserDto, UpdateUserDto } from '../dto';
@@ -20,14 +9,11 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  async createUser(
-    @Res() response: Response<UserRes | ErrorRes>,
-    @Body() createUserDto: CreateUserDto,
-  ) {
+  async createUser(@Res() response: Response<UserRes | ErrorRes>, @Body() createUserDto: CreateUserDto) {
     try {
       const newUser = await this.userService.createUser(createUserDto);
 
-      Logger.log( `🚀 UserController: User ${newUser.email} has been created successfully`);
+      Logger.log(`🚀 UserController: User ${newUser.email} has been created successfully`);
 
       return response.status(HttpStatus.CREATED).json({
         message: 'User has been created successfully',
@@ -78,10 +64,7 @@ export class UserController {
   }
 
   @Get('/:id')
-  async getUser(
-    @Res() response: Response<UserRes | ErrorRes>,
-    @Param('id') userId: string,
-  ) {
+  async getUser(@Res() response: Response<UserRes | ErrorRes>, @Param('id') userId: string) {
     try {
       const existingUser = await this.userService.getUser(userId);
 
@@ -97,14 +80,11 @@ export class UserController {
   }
 
   @Delete('/:id')
-  async deleteUser(
-    @Res() response: Response<UserRes | ErrorRes>,
-    @Param('id') userId: string,
-  ) {
+  async deleteUser(@Res() response: Response<UserRes | ErrorRes>, @Param('id') userId: string) {
     try {
       const deletedUser = await this.userService.deleteUser(userId);
 
-      Logger.log( `🚀 UserController: User ${deletedUser.email} has been deleted`);
+      Logger.log(`🚀 UserController: User ${deletedUser.email} has been deleted`);
 
       return response.status(HttpStatus.OK).json({
         message: 'User deleted successfully',

@@ -1,8 +1,8 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
-import {InjectModel} from "@nestjs/mongoose";
-import {Model} from "mongoose";
-import {Book} from "@libs/api-interface";
-import {CreateBookDto, UpdateBookDto} from "../dto";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Book } from '@libs/api-interface';
+import { CreateBookDto, UpdateBookDto } from '../dto';
 
 @Injectable()
 export class BooksService {
@@ -27,7 +27,7 @@ export class BooksService {
   async getAllBooks(): Promise<Book[]> {
     const bookData = await this.bookModel.find();
 
-    if (!bookData || bookData.length == 0) {
+    if (!bookData || bookData.length === 0) {
       throw new NotFoundException('Books data not found!');
     }
 

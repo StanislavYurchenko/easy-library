@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from '@libs/api-interface';
-import {defaultSchemaOptions} from "../../../configs";
+import { defaultSchemaOptions } from '../../../configs';
 
 @Schema({
   ...defaultSchemaOptions,

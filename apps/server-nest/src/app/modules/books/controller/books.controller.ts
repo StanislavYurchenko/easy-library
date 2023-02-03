@@ -1,23 +1,20 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, Res, Logger, HttpStatus, Put} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Res, Logger, HttpStatus, Put } from '@nestjs/common';
+import { Response } from 'express';
+import { BookRes, BooksRes, ErrorRes } from '@libs/api-interface';
 import { BooksService } from '../service/books.service';
 import { CreateBookDto } from '../dto/create-book.dto';
 import { UpdateBookDto } from '../dto/update-book.dto';
-import {Response} from "express";
-import {BookRes, BooksRes, ErrorRes} from "@libs/api-interface";
 
 @Controller('book')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
   @Post()
-  async createBook(
-    @Res() response: Response<BookRes | ErrorRes>,
-    @Body() createBookDto: CreateBookDto,
-  ) {
+  async createBook(@Res() response: Response<BookRes | ErrorRes>, @Body() createBookDto: CreateBookDto) {
     try {
       const newBook = await this.booksService.createBook(createBookDto);
 
-      Logger.log( `🚀 BookController: Book ${newBook.title} has been created successfully`);
+      Logger.log(`🚀 BookController: Book ${newBook.title} has been created successfully`);
 
       return response.status(HttpStatus.CREATED).json({
         message: 'Book has been created successfully',
@@ -68,10 +65,7 @@ export class BooksController {
   }
 
   @Get('/:id')
-  async getBook(
-    @Res() response: Response<BookRes | ErrorRes>,
-    @Param('id') bookId: string,
-  ) {
+  async getBook(@Res() response: Response<BookRes | ErrorRes>, @Param('id') bookId: string) {
     try {
       const existingBook = await this.booksService.getBook(bookId);
 
@@ -87,14 +81,11 @@ export class BooksController {
   }
 
   @Delete('/:id')
-  async deleteBook(
-    @Res() response: Response<BookRes | ErrorRes>,
-    @Param('id') bookId: string,
-  ) {
+  async deleteBook(@Res() response: Response<BookRes | ErrorRes>, @Param('id') bookId: string) {
     try {
       const deletedBook = await this.booksService.deleteBook(bookId);
 
-      Logger.log( `🚀 BookController: User ${deletedBook.title} has been deleted`);
+      Logger.log(`🚀 BookController: User ${deletedBook.title} has been deleted`);
 
       return response.status(HttpStatus.OK).json({
         message: 'Book deleted successfully',
@@ -105,4 +96,3 @@ export class BooksController {
     }
   }
 }
-

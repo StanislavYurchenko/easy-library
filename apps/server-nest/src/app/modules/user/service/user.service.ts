@@ -6,7 +6,7 @@ import { CreateUserDto, UpdateUserDto } from '../dto';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private userModel: Model<User>) {}
+  constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const newUser = await new this.userModel(createUserDto);
@@ -27,7 +27,7 @@ export class UserService {
   async getAllUsers(): Promise<User[]> {
     const userData = await this.userModel.find();
 
-    if (!userData || userData.length == 0) {
+    if (!userData || userData.length === 0) {
       throw new NotFoundException('Users data not found!');
     }
 
