@@ -5,7 +5,7 @@ import { BooksService } from '../service/books.service';
 import { CreateBookDto } from '../dto/create-book.dto';
 import { UpdateBookDto } from '../dto/update-book.dto';
 
-@Controller('book')
+@Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 

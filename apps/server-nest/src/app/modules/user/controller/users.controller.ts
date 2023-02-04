@@ -4,7 +4,7 @@ import { ErrorRes, UserRes, UsersRes } from '@libs/api-interface';
 import { CreateUserDto, UpdateUserDto } from '../dto';
 import { UsersService } from '../service';
 
-@Controller('user')
+@Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
