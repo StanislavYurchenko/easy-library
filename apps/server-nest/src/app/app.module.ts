@@ -4,7 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { mongoConfig } from './app.config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { BooksModule, UserModule } from './modules';
+import { BooksModule, UsersModule } from './modules';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { BooksModule, UserModule } from './modules';
       }),
       inject: [ConfigService],
     }),
-    UserModule,
+    UsersModule,
     BooksModule,
   ],
   controllers: [AppController],

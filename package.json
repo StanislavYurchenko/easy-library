@@ -17,7 +17,8 @@
     "test:client": "nx test client-angular",
     "test:server": "nx test server-nest",
     "clearCache": "rm -rf ./node_modules/.cache/nx",
-    "eslint:github-action": "npm run lint"
+    "lint:github-action": "npm run lint",
+    "test:github-action": "npm run test"
   },
   "private": true,
   "devDependencies": {

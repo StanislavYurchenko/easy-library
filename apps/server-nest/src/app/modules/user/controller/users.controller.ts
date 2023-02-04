@@ -2,16 +2,16 @@ import { Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Re
 import { Response } from 'express';
 import { ErrorRes, UserRes, UsersRes } from '@libs/api-interface';
 import { CreateUserDto, UpdateUserDto } from '../dto';
-import { UserService } from '../service';
+import { UsersService } from '../service';
 
 @Controller('user')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
 
   @Post()
   async createUser(@Res() response: Response<UserRes | ErrorRes>, @Body() createUserDto: CreateUserDto) {
     try {
-      const newUser = await this.userService.createUser(createUserDto);
+      const newUser = await this.usersService.createUser(createUserDto);
 
       Logger.log(`🚀 UserController: User ${newUser.email} has been created successfully`);
 
@@ -34,7 +34,7 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto,
   ) {
     try {
-      const existingUser = await this.userService.updateUser(userId, updateUserDto);
+      const existingUser = await this.usersService.updateUser(userId, updateUserDto);
 
       Logger.log(`🚀 UserController: User ${existingUser.email} has been updated successfully`);
 
@@ -50,7 +50,7 @@ export class UserController {
   @Get()
   async getUsers(@Res() response: Response<UsersRes | ErrorRes>) {
     try {
-      const usersData = await this.userService.getAllUsers();
+      const usersData = await this.usersService.getAllUsers();
 
       Logger.log(`🚀 UserController: ${usersData.length} users has been got`);
 
@@ -66,7 +66,7 @@ export class UserController {
   @Get('/:id')
   async getUser(@Res() response: Response<UserRes | ErrorRes>, @Param('id') userId: string) {
     try {
-      const existingUser = await this.userService.getUser(userId);
+      const existingUser = await this.usersService.getUser(userId);
 
       Logger.log(`🚀 UserController: User ${existingUser.email} has been got`);
 
@@ -82,7 +82,7 @@ export class UserController {
   @Delete('/:id')
   async deleteUser(@Res() response: Response<UserRes | ErrorRes>, @Param('id') userId: string) {
     try {
-      const deletedUser = await this.userService.deleteUser(userId);
+      const deletedUser = await this.usersService.deleteUser(userId);
 
       Logger.log(`🚀 UserController: User ${deletedUser.email} has been deleted`);
 
