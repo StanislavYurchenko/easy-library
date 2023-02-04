@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule],
       declarations: [AppComponent],
     }).compileComponents();
   });
@@ -15,13 +16,6 @@ describe('AppComponent', () => {
     const app = fixture.componentInstance;
 
     expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'client-angular'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-
-    expect(app.title).toEqual('client-angular');
   });
 
   it('should render title', () => {

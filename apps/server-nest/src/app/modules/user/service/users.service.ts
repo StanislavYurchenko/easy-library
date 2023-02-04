@@ -5,7 +5,7 @@ import { User } from '@libs/api-interface';
 import { CreateUserDto, UpdateUserDto } from '../dto';
 
 @Injectable()
-export class UserService {
+export class UsersService {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {

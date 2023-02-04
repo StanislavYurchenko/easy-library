@@ -1,4 +1,4 @@
-name: Lint
+name: CI actions
 
 on:
   push:
@@ -20,4 +20,7 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npm run eslint:github-action
+        run: npm run lint:github-action
+
+      - name: Run unit tests
+        run: npm run test:github-action
