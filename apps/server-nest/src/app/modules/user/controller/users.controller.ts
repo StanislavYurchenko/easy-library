@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { ErrorRes, UserRes, UsersRes } from '@libs/api-interface';
+import { ApiEndpoints, ErrorRes, UserRes, UsersRes } from '@libs/api-interface';
 import { CreateUserDto, UpdateUserDto } from '../dto';
 import { UsersService } from '../service';
 
-@Controller('users')
+@Controller(ApiEndpoints.users)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

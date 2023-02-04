@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Book } from '@libs/api-interface';
-import { defaultSchemaOptions } from '../../../configs';
+import { defaultSchemaOptions } from '@server-nest/configs';
 
 @Schema({
   ...defaultSchemaOptions,
