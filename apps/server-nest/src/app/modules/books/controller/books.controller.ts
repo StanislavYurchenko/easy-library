@@ -1,11 +1,10 @@
 import { Controller, Get, Post, Body, Param, Delete, Res, Logger, HttpStatus, Put } from '@nestjs/common';
 import { Response } from 'express';
-import { BookRes, BooksRes, ErrorRes } from '@libs/api-interface';
-import { BooksService } from '../service/books.service';
-import { CreateBookDto } from '../dto/create-book.dto';
-import { UpdateBookDto } from '../dto/update-book.dto';
+import { ApiEndpoints, BookRes, BooksRes, ErrorRes } from '@libs/api-interface';
+import { BooksService } from '../service';
+import { CreateBookDto, UpdateBookDto } from '../dto';
 
-@Controller('books')
+@Controller(ApiEndpoints.books)
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
