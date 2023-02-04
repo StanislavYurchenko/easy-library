@@ -19,7 +19,7 @@ class BookEntity implements Book {
   author!: string;
 
   @Prop()
-  description!: string;
+  description?: string;
 }
 
 export const BookSchema = SchemaFactory.createForClass(BookEntity);
