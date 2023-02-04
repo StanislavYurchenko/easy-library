@@ -18,11 +18,11 @@
     "skipLibCheck": true,
     "strictNullChecks": true,
     "skipDefaultLibCheck": true,
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "@libs/api-interface": ["libs/api-interface/"],
-      "@server-nest/configs": ["apps/server-nest/src/app/configs/"],
-      "@server-nest/modules": ["apps/server-nest/src/app/modules/"]
+      "@server-nest/configs": ["apps/server-nest/src/app/configs/index"],
+      "@server-nest/modules": ["apps/server-nest/src/app/modules/index"]
     },
     "strict": true
   },
