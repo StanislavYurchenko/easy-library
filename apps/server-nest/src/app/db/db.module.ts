@@ -5,7 +5,6 @@ import { mongoConfig } from './db.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
