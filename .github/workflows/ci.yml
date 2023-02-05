@@ -1,4 +1,4 @@
-name: CI actions
+name: CI_actions
 
 on:
   push:
