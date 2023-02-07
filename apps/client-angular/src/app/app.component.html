@@ -1,3 +1,6 @@
 <router-outlet></router-outlet>
+<div class="progress" [style.width.%]="progress$ | async"></div>
+<div class="progress" [style.width.%]="progress2$ | async"></div>
 <button (click)="getData()">get data from server</button>
+<button (click)="runAsync()">run Async</button>
 <div>{{dataFromServer}}</div>
