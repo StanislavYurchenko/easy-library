@@ -1,14 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IUser } from '@libs/api-interface';
 import { CreateUserDto, UpdateUserDto } from '../dto';
 import { UserDocument } from '../schema';
 import { TableName } from '../../../libs';
+import { BooksService, ReviewsService } from '@server-nest/modules';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(TableName.User) private readonly userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(TableName.User) private readonly userModel: Model<UserDocument>,
+    @Inject(forwardRef(() => BooksService)) private readonly booksService: BooksService,
+    @Inject(forwardRef(() => ReviewsService)) private readonly reviewsService: ReviewsService,
+  ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<IUser> {
     const newUser = await new this.userModel(createUserDto);

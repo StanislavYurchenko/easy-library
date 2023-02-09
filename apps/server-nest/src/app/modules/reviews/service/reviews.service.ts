@@ -1,14 +1,20 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IReview } from '@libs/api-interface';
 import { TableName } from '../../../libs';
 import { CreateReviewDto, UpdateReviewDto } from '../dto';
 import { ReviewDocument } from '../schema';
+import { UsersService, BooksService } from '@server-nest/modules';
 
 @Injectable()
 export class ReviewsService {
-  constructor(@InjectModel(TableName.Review) private reviewModel: Model<ReviewDocument>) {}
+  constructor(
+    @InjectModel(TableName.Review)
+    private reviewModel: Model<ReviewDocument>,
+    @Inject(forwardRef(() => UsersService)) private readonly usersService: UsersService,
+    @Inject(forwardRef(() => BooksService)) private readonly booksService: BooksService,
+  ) {}
 
   async createReview(createReviewDto: CreateReviewDto): Promise<IReview> {
     const newReview = await new this.reviewModel(createReviewDto).populate({ path: 'author' });

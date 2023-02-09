@@ -1,14 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IBook } from '@libs/api-interface';
 import { CreateBookDto, UpdateBookDto } from '../dto';
 import { BookDocument } from '../schema';
 import { TableName } from '../../../libs';
+import { ReviewsService, UsersService } from '@server-nest/modules';
 
 @Injectable()
 export class BooksService {
-  constructor(@InjectModel(TableName.Book) private bookModel: Model<BookDocument>) {}
+  constructor(
+    @InjectModel(TableName.Book) private bookModel: Model<BookDocument>,
+    @Inject(forwardRef(() => UsersService)) private readonly UsersService: UsersService,
+    @Inject(forwardRef(() => ReviewsService)) private readonly reviewsService: ReviewsService,
+  ) {}
 
   async createBook(createBookDto: CreateBookDto): Promise<IBook> {
     const newBook = await new this.bookModel(createBookDto);

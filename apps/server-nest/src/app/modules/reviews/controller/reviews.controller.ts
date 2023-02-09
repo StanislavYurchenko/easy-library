@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Body, Param, Delete, Res, Logger, HttpStatus, Put } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiEndpoints, ApiRes, IReview } from '@libs/api-interface';
-import { ReviewsService } from '../service';
 import { CreateReviewDto, UpdateReviewDto } from '../dto';
+// eslint-disable-next-line import/no-cycle
+import { ReviewsService } from '../service';
 
 @Controller(ApiEndpoints.reviews)
 export class ReviewsController {

@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Body, Param, Delete, Res, Logger, HttpStatus, Put } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiEndpoints, ApiRes, IBook } from '@libs/api-interface';
-import { BooksService } from '../service';
 import { CreateBookDto, UpdateBookDto } from '../dto';
+// eslint-disable-next-line import/no-cycle
+import { BooksService } from '../service';
 
 @Controller(ApiEndpoints.books)
 export class BooksController {

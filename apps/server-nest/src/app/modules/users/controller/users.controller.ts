@@ -2,7 +2,8 @@ import { Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Re
 import { Response } from 'express';
 import { ApiEndpoints, ApiRes, IUser } from '@libs/api-interface';
 import { CreateUserDto, UpdateUserDto } from '../dto';
-import { UsersService } from '../service';
+// eslint-disable-next-line import/no-cycle
+import { UsersService } from '../service/users.service';
 
 @Controller(ApiEndpoints.users)
 export class UsersController {
