@@ -11,20 +11,13 @@ export class BooksService {
   constructor(@InjectModel(TableName.Book) private bookModel: Model<BookDocument>) {}
 
   async createBook(createBookDto: CreateBookDto): Promise<IBook> {
-    let newBook = await new this.bookModel(createBookDto).populate({ path: 'reviews' });
-
-    newBook = await newBook.populate({ path: 'likes' });
-    newBook = await newBook.populate({ path: 'dislikes' });
+    const newBook = await new this.bookModel(createBookDto);
 
     return newBook.save();
   }
 
   async updateBook(bookId: string, updateBookDto: UpdateBookDto): Promise<IBook> {
-    const existingBook = await this.bookModel
-      .findByIdAndUpdate(bookId, updateBookDto, { new: true })
-      .populate({ path: 'reviews' })
-      .populate({ path: 'likes' })
-      .populate({ path: 'dislikes' });
+    const existingBook = await this.bookModel.findByIdAndUpdate(bookId, updateBookDto, { new: true });
 
     if (!existingBook) {
       throw new NotFoundException(`Book #${bookId} not found`);
@@ -34,11 +27,7 @@ export class BooksService {
   }
 
   async getAllBooks(): Promise<IBook[]> {
-    const bookData = await this.bookModel
-      .find()
-      .populate({ path: 'reviews' })
-      .populate({ path: 'likes' })
-      .populate({ path: 'dislikes' });
+    const bookData = await this.bookModel.find();
 
     if (!bookData || bookData.length === 0) {
       throw new NotFoundException('Books data not found!');
@@ -48,11 +37,7 @@ export class BooksService {
   }
 
   async getBook(bookId: string): Promise<IBook> {
-    const existingBook = await this.bookModel
-      .findById(bookId)
-      .populate({ path: 'reviews' })
-      .populate({ path: 'likes' })
-      .populate({ path: 'dislikes' });
+    const existingBook = await this.bookModel.findById(bookId);
 
     if (!existingBook) {
       throw new NotFoundException(`Book #${bookId} not found`);
@@ -62,11 +47,7 @@ export class BooksService {
   }
 
   async deleteBook(bookId: string): Promise<IBook> {
-    const deletedBook = await this.bookModel
-      .findByIdAndDelete(bookId)
-      .populate({ path: 'reviews' })
-      .populate({ path: 'likes' })
-      .populate({ path: 'dislikes' });
+    const deletedBook = await this.bookModel.findByIdAndDelete(bookId);
 
     if (!deletedBook) {
       throw new NotFoundException(`Book #${bookId} not found`);

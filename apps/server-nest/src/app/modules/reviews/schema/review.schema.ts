@@ -10,19 +10,19 @@ import { TableName } from '../../../libs';
 class Review implements Required<IReview> {
   id!: ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: TableName.User, required: true })
+  @Prop({ type: Types.ObjectId, ref: TableName.User, required: true, autopopulate: true })
   author!: IUser;
 
   @Prop({ type: String, trim: true, required: true })
   comment!: string;
 
-  @Prop({ type: Types.ObjectId, ref: TableName.Book, required: true })
+  @Prop({ type: Types.ObjectId, ref: TableName.Book, required: true, autopopulate: true })
   book!: IBook;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }], autopopulate: true })
   likes!: IUser[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }], autopopulate: true })
   dislikes!: IUser[];
 }
 

@@ -26,16 +26,16 @@ export class User implements Required<IUser> {
   @Prop({ type: String, trim: true })
   phone!: string;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.Book }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.Book }], autopopulate: true })
   inuse_books!: IBook[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.Book }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.Book }], autopopulate: true })
   read_books!: IBook[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.Book }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.Book }], autopopulate: true })
   wish_books!: IBook[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.Review }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.Review }], autopopulate: true })
   reviews!: IReview[];
 }
 

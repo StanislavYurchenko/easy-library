@@ -11,22 +11,13 @@ export class ReviewsService {
   constructor(@InjectModel(TableName.Review) private reviewModel: Model<ReviewDocument>) {}
 
   async createReview(createReviewDto: CreateReviewDto): Promise<IReview> {
-    let newReview = await new this.reviewModel(createReviewDto).populate({ path: 'author' });
-
-    newReview = await newReview.populate({ path: 'book' });
-    newReview = await newReview.populate({ path: 'likes' });
-    newReview = await newReview.populate({ path: 'dislikes' });
+    const newReview = await new this.reviewModel(createReviewDto).populate({ path: 'author' });
 
     return newReview.save();
   }
 
   async updateReview(reviewId: string, updateReviewDto: UpdateReviewDto): Promise<IReview> {
-    const existingReview = await this.reviewModel
-      .findByIdAndUpdate(reviewId, updateReviewDto, { new: true })
-      .populate({ path: 'author' })
-      .populate({ path: 'book' })
-      .populate({ path: 'likes' })
-      .populate({ path: 'dislikes' });
+    const existingReview = await this.reviewModel.findByIdAndUpdate(reviewId, updateReviewDto, { new: true });
 
     if (!existingReview) {
       throw new NotFoundException(`Review #${reviewId} not found`);
@@ -36,12 +27,7 @@ export class ReviewsService {
   }
 
   async getAllReviews(): Promise<IReview[]> {
-    const reviewData = await this.reviewModel
-      .find()
-      .populate({ path: 'author' })
-      .populate({ path: 'book' })
-      .populate({ path: 'likes' })
-      .populate({ path: 'dislikes' });
+    const reviewData = await this.reviewModel.find();
 
     if (!reviewData || reviewData.length === 0) {
       throw new NotFoundException('Reviews data not found!');
@@ -51,12 +37,7 @@ export class ReviewsService {
   }
 
   async getReview(reviewId: string): Promise<IReview> {
-    const existingReview = await this.reviewModel
-      .findById(reviewId)
-      .populate({ path: 'author' })
-      .populate({ path: 'book' })
-      .populate({ path: 'likes' })
-      .populate({ path: 'dislikes' });
+    const existingReview = await this.reviewModel.findById(reviewId);
 
     if (!existingReview) {
       throw new NotFoundException(`Review #${reviewId} not found`);
@@ -66,12 +47,7 @@ export class ReviewsService {
   }
 
   async deleteReview(reviewId: string): Promise<IReview> {
-    const deletedReview = await this.reviewModel
-      .findByIdAndDelete(reviewId)
-      .populate({ path: 'author' })
-      .populate({ path: 'book' })
-      .populate({ path: 'likes' })
-      .populate({ path: 'dislikes' });
+    const deletedReview = await this.reviewModel.findByIdAndDelete(reviewId);
 
     if (!deletedReview) {
       throw new NotFoundException(`Review #${reviewId} not found`);

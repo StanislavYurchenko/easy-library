@@ -25,13 +25,13 @@ class Book implements Required<IBook> {
   @Prop({ type: Boolean })
   available!: boolean;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.Review }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.Review }], autopopulate: true })
   reviews!: IReview[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }], autopopulate: true })
   likes!: IUser[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }], autopopulate: true })
   dislikes!: IUser[];
 
   @Prop({ type: Number })

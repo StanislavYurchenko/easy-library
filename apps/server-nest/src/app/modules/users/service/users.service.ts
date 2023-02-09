@@ -11,22 +11,13 @@ export class UsersService {
   constructor(@InjectModel(TableName.User) private readonly userModel: Model<UserDocument>) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<IUser> {
-    let newUser = await new this.userModel(createUserDto).populate({ path: 'inuse_books' });
-
-    newUser = await newUser.populate({ path: 'read_books' });
-    newUser = await newUser.populate({ path: 'wish_books' });
-    newUser = await newUser.populate({ path: 'reviews' });
+    const newUser = await new this.userModel(createUserDto);
 
     return newUser.save();
   }
 
   async updateUser(userId: string, updateUserDto: UpdateUserDto): Promise<IUser> {
-    const existingUser = await this.userModel
-      .findByIdAndUpdate(userId, updateUserDto, { new: true })
-      .populate({ path: 'inuse_books' })
-      .populate({ path: 'read_books' })
-      .populate({ path: 'wish_books' })
-      .populate({ path: 'reviews' });
+    const existingUser = await this.userModel.findByIdAndUpdate(userId, updateUserDto, { new: true });
 
     if (!existingUser) {
       throw new NotFoundException(`User #${userId} not found`);
@@ -36,12 +27,7 @@ export class UsersService {
   }
 
   async getAllUsers(): Promise<IUser[]> {
-    const userData = await this.userModel
-      .find()
-      .populate({ path: 'inuse_books' })
-      .populate({ path: 'read_books' })
-      .populate({ path: 'wish_books' })
-      .populate({ path: 'reviews' });
+    const userData = await this.userModel.find();
 
     if (!userData || userData.length === 0) {
       throw new NotFoundException('Users data not found!');
@@ -51,12 +37,7 @@ export class UsersService {
   }
 
   async getUser(userId: string): Promise<IUser> {
-    const existingUser = await this.userModel
-      .findById(userId)
-      .populate({ path: 'inuse_books' })
-      .populate({ path: 'read_books' })
-      .populate({ path: 'wish_books' })
-      .populate({ path: 'reviews' });
+    const existingUser = await this.userModel.findById(userId);
 
     if (!existingUser) {
       throw new NotFoundException(`User #${userId} not found`);
