@@ -1,20 +1,30 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+/* eslint-disable import/no-cycle */
+import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Book } from '@libs/api-interface';
-import { CreateBookDto, UpdateBookDto } from '../dto';
+import { Model, ObjectId } from 'mongoose';
+import { IBook } from '@libs/api-interface';
+import { TableName } from '../../../libs';
+import { BookDocument } from '../schema/book.schema';
+import { CreateBookDto } from '../dto/create-book.dto';
+import { UpdateBookDto } from '../dto/update-book.dto';
+import { UsersService } from '../../users/service/users.service';
+import { ReviewsService } from '../../reviews/service/reviews.service';
 
 @Injectable()
 export class BooksService {
-  constructor(@InjectModel('Book') private bookModel: Model<Book>) {}
+  constructor(
+    @InjectModel(TableName.Book) private readonly bookModel: Model<BookDocument>,
+    @Inject(forwardRef(() => UsersService)) private readonly usersService: UsersService,
+    @Inject(forwardRef(() => ReviewsService)) private readonly reviewsService: ReviewsService,
+  ) {}
 
-  async createBook(createBookDto: CreateBookDto): Promise<Book> {
+  async createBook(createBookDto: CreateBookDto): Promise<IBook> {
     const newBook = await new this.bookModel(createBookDto);
 
     return newBook.save();
   }
 
-  async updateBook(bookId: string, updateBookDto: UpdateBookDto): Promise<Book> {
+  async updateBook(bookId: string, updateBookDto: UpdateBookDto): Promise<IBook> {
     const existingBook = await this.bookModel.findByIdAndUpdate(bookId, updateBookDto, { new: true });
 
     if (!existingBook) {
@@ -24,7 +34,7 @@ export class BooksService {
     return existingBook;
   }
 
-  async getAllBooks(): Promise<Book[]> {
+  async getAllBooks(): Promise<IBook[]> {
     const bookData = await this.bookModel.find();
 
     if (!bookData || bookData.length === 0) {
@@ -34,8 +44,8 @@ export class BooksService {
     return bookData;
   }
 
-  async getBook(bookId: string): Promise<Book> {
-    const existingBook = await this.bookModel.findById(bookId).exec();
+  async getBook(bookId: string): Promise<IBook> {
+    const existingBook = await this.bookModel.findById(bookId);
 
     if (!existingBook) {
       throw new NotFoundException(`Book #${bookId} not found`);
@@ -44,7 +54,7 @@ export class BooksService {
     return existingBook;
   }
 
-  async deleteBook(bookId: string): Promise<Book> {
+  async deleteBook(bookId: string): Promise<IBook> {
     const deletedBook = await this.bookModel.findByIdAndDelete(bookId);
 
     if (!deletedBook) {
@@ -53,4 +63,14 @@ export class BooksService {
 
     return deletedBook;
   }
+
+  // async pushBooksIntoList(id: ObjectId[], field: string, value: ObjectId) {
+  //   const result = await this.bookModel.updateMany({ _id: { $in: id } }, { $addToSet: { [field]: value } });
+
+  //   if (result.modifiedCount !== id.length) {
+  //     throw new BadRequestException(
+  //       `Book\'s field ${field}:${value} was not updated for some book(s) from list ${id.toString}`,
+  //     );
+  //   }
+  // }
 }

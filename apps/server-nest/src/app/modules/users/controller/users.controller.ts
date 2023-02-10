@@ -1,23 +1,25 @@
 import { Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { ApiEndpoints, ErrorRes, UserRes, UsersRes } from '@libs/api-interface';
-import { CreateUserDto, UpdateUserDto } from '../dto';
-import { UsersService } from '../service';
+import { ApiEndpoints, ApiRes, IUser } from '@libs/api-interface';
+import { UsersService } from '../service/users.service';
+import { CreateUserDto } from '../dto/create-user-dto';
+import { UpdateUserDto } from '../dto/update-user-dto';
 
 @Controller(ApiEndpoints.users)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  async createUser(@Res() response: Response<UserRes | ErrorRes>, @Body() createUserDto: CreateUserDto) {
+  async createUser(@Res() response: Response<ApiRes<IUser>>, @Body() createUserDto: CreateUserDto) {
     try {
       const newUser = await this.usersService.createUser(createUserDto);
 
       Logger.log(`🚀 UserController: User ${newUser.email} has been created successfully`);
 
       return response.status(HttpStatus.CREATED).json({
+        statusCode: HttpStatus.OK,
         message: 'User has been created successfully',
-        user: newUser,
+        data: newUser,
       });
     } catch (err) {
       return response.status(HttpStatus.BAD_REQUEST).json({
@@ -29,7 +31,7 @@ export class UsersController {
 
   @Put('/:id')
   async updateUser(
-    @Res() response: Response<UserRes | ErrorRes>,
+    @Res() response: Response<ApiRes<IUser>>,
     @Param('id') userId: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
@@ -39,57 +41,69 @@ export class UsersController {
       Logger.log(`🚀 UserController: User ${existingUser.email} has been updated successfully`);
 
       return response.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
         message: 'User has been successfully updated',
-        user: existingUser,
+        data: existingUser,
       });
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }
   }
 
   @Get()
-  async getUsers(@Res() response: Response<UsersRes | ErrorRes>) {
+  async getUsers(@Res() response: Response<ApiRes<IUser[]>>) {
     try {
       const usersData = await this.usersService.getAllUsers();
 
       Logger.log(`🚀 UserController: ${usersData.length} users has been got`);
 
       return response.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
         message: 'All users data found successfully',
-        users: usersData,
+        data: usersData,
       });
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }
   }
 
   @Get('/:id')
-  async getUser(@Res() response: Response<UserRes | ErrorRes>, @Param('id') userId: string) {
+  async getUser(@Res() response: Response<ApiRes<IUser>>, @Param('id') userId: string) {
     try {
       const existingUser = await this.usersService.getUser(userId);
 
       Logger.log(`🚀 UserController: User ${existingUser.email} has been got`);
 
       return response.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
         message: 'User found successfully',
-        user: existingUser,
+        data: existingUser,
       });
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }
   }
 
   @Delete('/:id')
-  async deleteUser(@Res() response: Response<UserRes | ErrorRes>, @Param('id') userId: string) {
+  async deleteUser(@Res() response: Response<ApiRes<IUser>>, @Param('id') userId: string) {
     try {
       const deletedUser = await this.usersService.deleteUser(userId);
 
       Logger.log(`🚀 UserController: User ${deletedUser.email} has been deleted`);
 
       return response.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
         message: 'User deleted successfully',
-        user: deletedUser,
+        data: deletedUser,
       });
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }

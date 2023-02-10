@@ -1,22 +1,13 @@
-export interface User {
-  readonly id: string;
+import { ObjectId } from "mongoose";
+import { IBook, IReview } from ".";
+
+export interface IUser {
+  readonly id: ObjectId;
   readonly name: string;
   readonly email: string;
   readonly phone?: string;
-}
-
-export interface ErrorRes {
-  readonly statusCode: number;
-  readonly message: string;
-  readonly error?: string;
-}
-
-export interface UserRes {
-  readonly message: string;
-  readonly user: User;
-}
-
-export interface UsersRes {
-  readonly message: string;
-  readonly users: User[];
+  readonly inuse_books?: IBook[];
+  readonly read_books?: IBook[];
+  readonly wish_books?: IBook[];
+  readonly reviews?: IReview[];
 }

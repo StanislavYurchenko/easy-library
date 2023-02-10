@@ -1,17 +1,19 @@
-export interface Book {
-  readonly id: string;
+import { ObjectId } from "mongoose";
+import { IReview, IUser } from ".";
+
+export interface IBook {
+  readonly id: ObjectId;
   readonly title: string;
   readonly author: string;
-  readonly description?: string;
-}
-
-
-export interface BookRes {
-  readonly message: string;
-  readonly book: Book;
-}
-
-export interface BooksRes {
-  readonly message: string;
-  readonly books: Book[];
+  readonly description: string;
+  readonly rating?: number;
+  readonly available?: boolean;
+  readonly reviews?: IReview[];
+  readonly inuse?: IUser[];
+  readonly read?: IUser[];
+  readonly wish?: IUser[];
+  readonly likes?: IUser[];
+  readonly dislikes?: IUser[];
+  readonly total_quantity?: number;
+  readonly rented_quantity?: number;
 }
