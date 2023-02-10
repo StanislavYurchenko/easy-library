@@ -10,7 +10,12 @@ describe('BooksService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [BooksService, UsersService, ReviewsService, { provide: getModelToken(TableName.Book), useValue: {} }],
+      providers: [
+        BooksService,
+        { provide: UsersService, useValue: {} },
+        { provide: ReviewsService, useValue: {} },
+        { provide: getModelToken(TableName.Book), useValue: {} },
+      ],
     }).compile();
 
     service = module.get<BooksService>(BooksService);
