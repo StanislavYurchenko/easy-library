@@ -24,6 +24,9 @@ export class User implements Required<IUser> {
   email!: string;
 
   @Prop({ type: String, trim: true })
+  password!: string;
+
+  @Prop({ type: String, trim: true })
   phone!: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: TableName.Book }], autopopulate: false })

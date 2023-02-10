@@ -45,8 +45,6 @@ export class UsersController {
         message: 'User has been successfully updated',
         data: existingUser,
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }
@@ -64,8 +62,6 @@ export class UsersController {
         message: 'All users data found successfully',
         data: usersData,
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }
@@ -83,8 +79,6 @@ export class UsersController {
         message: 'User found successfully',
         data: existingUser,
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }
@@ -102,8 +96,6 @@ export class UsersController {
         message: 'User deleted successfully',
         data: deletedUser,
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }
