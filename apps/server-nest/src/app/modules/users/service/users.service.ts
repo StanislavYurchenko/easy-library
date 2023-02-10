@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';

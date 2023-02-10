@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import MongooseAutopopulate from 'mongoose-autopopulate';

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Controller, Get, Post, Body, Param, Delete, Res, Logger, HttpStatus, Put } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiEndpoints, ApiRes, IReview } from '@libs/api-interface';
@@ -21,8 +22,6 @@ export class ReviewsController {
         message: 'Review has been created successfully',
         data: newReview as any as IReview,
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(HttpStatus.BAD_REQUEST).json({
         statusCode: HttpStatus.BAD_REQUEST,
@@ -48,8 +47,6 @@ export class ReviewsController {
         message: 'Review has been successfully updated',
         data: existingReview as any as IReview,
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }
@@ -67,8 +64,6 @@ export class ReviewsController {
         message: 'All reviews data found successfully',
         data: reviewsData as any as IReview[],
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }
@@ -86,8 +81,6 @@ export class ReviewsController {
         message: 'Review found successfully',
         data: existingReview as any as IReview,
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }
@@ -105,8 +98,6 @@ export class ReviewsController {
         message: 'Review deleted successfully',
         data: deletedReview as any as IReview,
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }

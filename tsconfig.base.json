@@ -21,8 +21,7 @@
     "baseUrl": ".",
     "paths": {
       "@libs/api-interface": ["libs/api-interface/index"],
-      "@server-nest/configs": ["apps/server-nest/src/app/configs/index"],
-      "@server-nest/modules": ["apps/server-nest/src/app/modules/index"]
+      "@server-nest/configs": ["apps/server-nest/src/app/configs/index"]
     },
     "strict": true
   },
