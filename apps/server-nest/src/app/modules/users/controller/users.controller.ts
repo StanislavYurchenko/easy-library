@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiEndpoints, ApiRes, IUser } from '@libs/api-interface';
-import { CreateUserDto, UpdateUserDto } from '../dto';
-// eslint-disable-next-line import/no-cycle
 import { UsersService } from '../service/users.service';
+import { CreateUserDto } from '../dto/create-user-dto';
+import { UpdateUserDto } from '../dto/update-user-dto';
 
 @Controller(ApiEndpoints.users)
 export class UsersController {

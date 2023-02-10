@@ -2,10 +2,11 @@ import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import MongooseAutopopulate from 'mongoose-autopopulate';
 import { TableName } from '../../libs';
-import { BooksModule, ReviewsModule } from '@server-nest/modules';
-import { UsersService } from './service';
-import { UsersController } from './controller';
-import { UserSchema } from './schema';
+import { UsersService } from './service/users.service';
+import { UsersController } from './controller/users.controller';
+import { UserSchema } from './schema/user.schema';
+import { ReviewsModule } from '../reviews/reviews.module';
+import { BooksModule } from '../books/books.module';
 
 @Module({
   imports: [

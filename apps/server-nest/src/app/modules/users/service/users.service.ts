@@ -2,10 +2,12 @@ import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/commo
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { IUser } from '@libs/api-interface';
-import { BooksService, ReviewsService } from '@server-nest/modules';
-import { CreateUserDto, UpdateUserDto } from '../dto';
-import { UserDocument } from '../schema';
 import { TableName } from '../../../libs';
+import { BooksService } from '../../books/service/books.service';
+import { ReviewsService } from '../../reviews/service/reviews.service';
+import { CreateUserDto } from '../dto/create-user-dto';
+import { UpdateUserDto } from '../dto/update-user-dto';
+import { UserDocument } from '../schema/user.schema';
 
 @Injectable()
 export class UsersService {
@@ -79,7 +81,7 @@ export class UsersService {
   //   if (wish_books?.length) {
   //     this.booksService.pushBooksIntoList(wish_books as any as ObjectId[], 'wish', id);
   //   }
-    
+
   //   if (reviews?.length) {
   //     this.booksService.pushBooksIntoList(wish_books as any as ObjectId[], 'reviews', id);
   //   }

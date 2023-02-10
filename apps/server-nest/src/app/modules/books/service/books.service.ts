@@ -1,11 +1,14 @@
+/* eslint-disable import/no-cycle */
 import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { IBook } from '@libs/api-interface';
-import { ReviewsService, UsersService } from '@server-nest/modules';
-import { CreateBookDto, UpdateBookDto } from '../dto';
-import { BookDocument } from '../schema';
 import { TableName } from '../../../libs';
+import { BookDocument } from '../schema/book.schema';
+import { CreateBookDto } from '../dto/create-book.dto';
+import { UpdateBookDto } from '../dto/update-book.dto';
+import { UsersService } from '../../users/service/users.service';
+import { ReviewsService } from '../../reviews/service/reviews.service';
 
 @Injectable()
 export class BooksService {
