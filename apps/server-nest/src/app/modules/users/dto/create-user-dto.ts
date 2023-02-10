@@ -25,6 +25,11 @@ export class CreateUserDto implements Required<IUser> {
   @IsNotEmpty()
   readonly email!: string;
 
+  @MinLength(3)
+  @MaxLength(30)
+  @IsNotEmpty()
+  readonly password!: string;
+
   @IsPhoneNumber()
   @IsOptional()
   readonly phone!: string;

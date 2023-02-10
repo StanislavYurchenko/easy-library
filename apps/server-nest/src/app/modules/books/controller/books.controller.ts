@@ -21,8 +21,6 @@ export class BooksController {
         message: 'Book has been created successfully',
         data: newBook,
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(HttpStatus.BAD_REQUEST).json({
         statusCode: HttpStatus.BAD_REQUEST,
@@ -48,8 +46,6 @@ export class BooksController {
         message: 'Book has been successfully updated',
         data: existingBook,
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }
@@ -67,8 +63,6 @@ export class BooksController {
         message: 'All books data found successfully',
         data: booksData,
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }
@@ -86,8 +80,6 @@ export class BooksController {
         message: 'Book found successfully',
         data: existingBook,
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }
@@ -105,8 +97,6 @@ export class BooksController {
         message: 'Book deleted successfully',
         data: deletedBook,
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return response.status(err.status).json(err.response);
     }
