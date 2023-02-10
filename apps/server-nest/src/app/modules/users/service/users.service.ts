@@ -1,11 +1,11 @@
 import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { IUser } from '@libs/api-interface';
+import { BooksService, ReviewsService } from '@server-nest/modules';
 import { CreateUserDto, UpdateUserDto } from '../dto';
 import { UserDocument } from '../schema';
 import { TableName } from '../../../libs';
-import { BooksService, ReviewsService } from '@server-nest/modules';
 
 @Injectable()
 export class UsersService {
@@ -18,6 +18,8 @@ export class UsersService {
   async createUser(createUserDto: CreateUserDto): Promise<IUser> {
     const newUser = await new this.userModel(createUserDto);
 
+    // this.pushRelatedUserData(newUser);
+
     return newUser.save();
   }
 
@@ -27,6 +29,8 @@ export class UsersService {
     if (!existingUser) {
       throw new NotFoundException(`User #${userId} not found`);
     }
+
+    // this.pushRelatedUserData(existingUser);
 
     return existingUser;
   }
@@ -60,4 +64,24 @@ export class UsersService {
 
     return deletedUser;
   }
+
+  // private pushRelatedUserData(user: IUser): void {
+  //   const { inuse_books, read_books, wish_books, reviews, id } = user;
+
+  //   if (inuse_books?.length) {
+  //     this.booksService.pushBooksIntoList(inuse_books as any as ObjectId[], 'inuse', id);
+  //   }
+
+  //   if (read_books?.length) {
+  //     this.booksService.pushBooksIntoList(read_books as any as ObjectId[], 'read', id);
+  //   }
+
+  //   if (wish_books?.length) {
+  //     this.booksService.pushBooksIntoList(wish_books as any as ObjectId[], 'wish', id);
+  //   }
+    
+  //   if (reviews?.length) {
+  //     this.booksService.pushBooksIntoList(wish_books as any as ObjectId[], 'reviews', id);
+  //   }
+  // }
 }

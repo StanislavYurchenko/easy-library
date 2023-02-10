@@ -40,6 +40,21 @@ export class CreateBookDto implements Required<IBook> {
   @IsArray()
   @IsMongoId({ each: true })
   @IsOptional()
+  readonly inuse!: IUser[];
+
+  @IsArray()
+  @IsMongoId({ each: true })
+  @IsOptional()
+  readonly read!: IUser[];
+
+  @IsArray()
+  @IsMongoId({ each: true })
+  @IsOptional()
+  readonly wish!: IUser[];
+
+  @IsArray()
+  @IsMongoId({ each: true })
+  @IsOptional()
   readonly likes!: IUser[];
 
   @IsArray()

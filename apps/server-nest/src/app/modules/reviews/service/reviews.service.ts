@@ -1,17 +1,16 @@
-import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IReview } from '@libs/api-interface';
+import { UsersService, BooksService } from '@server-nest/modules';
 import { TableName } from '../../../libs';
 import { CreateReviewDto, UpdateReviewDto } from '../dto';
 import { ReviewDocument } from '../schema';
-import { UsersService, BooksService } from '@server-nest/modules';
 
 @Injectable()
 export class ReviewsService {
   constructor(
-    @InjectModel(TableName.Review)
-    private reviewModel: Model<ReviewDocument>,
+    @InjectModel(TableName.Review) private readonly reviewModel: Model<ReviewDocument>,
     @Inject(forwardRef(() => UsersService)) private readonly usersService: UsersService,
     @Inject(forwardRef(() => BooksService)) private readonly booksService: BooksService,
   ) {}
@@ -61,4 +60,14 @@ export class ReviewsService {
 
     return deletedReview;
   }
+
+  // async pushReviewsIntoList(id: string[], field: string, value: string) {
+  //   const result = await this.reviewModel.updateMany({ _id: { $in: id } }, { $addToSet: { [field]: value } });
+
+  //   if (result.modifiedCount !== id.length) {
+  //     throw new BadRequestException(
+  //       `Book\'s field ${field}:${value} was not updated for some review(s) from list ${id.toString}`,
+  //     );
+  //   }
+  // }
 }

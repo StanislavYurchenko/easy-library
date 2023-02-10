@@ -9,6 +9,9 @@ export interface IBook {
   readonly rating?: number;
   readonly available?: boolean;
   readonly reviews?: IReview[];
+  readonly inuse?: IUser[];
+  readonly read?: IUser[];
+  readonly wish?: IUser[];
   readonly likes?: IUser[];
   readonly dislikes?: IUser[];
   readonly total_quantity?: number;

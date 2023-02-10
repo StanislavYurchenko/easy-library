@@ -29,6 +29,15 @@ class Book implements Required<IBook> {
   reviews!: IReview[];
 
   @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }], autopopulate: true })
+  inuse!: IUser[];
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }], autopopulate: true })
+  read!: IUser[];
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }], autopopulate: true })
+  wish!: IUser[];
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }], autopopulate: true })
   likes!: IUser[];
 
   @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }], autopopulate: true })
