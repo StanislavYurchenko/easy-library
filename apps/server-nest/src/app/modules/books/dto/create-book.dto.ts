@@ -1,9 +1,8 @@
 import { IsArray, IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
-import { ObjectId } from 'mongoose';
-import { IBook, IReview, IUser } from '@libs/api-interface';
+import { IBook } from '../interface/book.interface';
 
 export class CreateBookDto implements Required<IBook> {
-  id!: ObjectId;
+  id!: string;
 
   @IsString()
   @MinLength(3)
@@ -35,32 +34,27 @@ export class CreateBookDto implements Required<IBook> {
   @IsArray()
   @IsMongoId({ each: true })
   @IsOptional()
-  readonly reviews!: IReview[];
+  readonly inuse!: string[];
 
   @IsArray()
   @IsMongoId({ each: true })
   @IsOptional()
-  readonly inuse!: IUser[];
+  readonly read!: string[];
 
   @IsArray()
   @IsMongoId({ each: true })
   @IsOptional()
-  readonly read!: IUser[];
+  readonly wish!: string[];
 
   @IsArray()
   @IsMongoId({ each: true })
   @IsOptional()
-  readonly wish!: IUser[];
+  readonly likes!: string[];
 
   @IsArray()
   @IsMongoId({ each: true })
   @IsOptional()
-  readonly likes!: IUser[];
-
-  @IsArray()
-  @IsMongoId({ each: true })
-  @IsOptional()
-  readonly dislikes!: IUser[];
+  readonly dislikes!: string[];
 
   @IsNumber()
   @IsOptional()

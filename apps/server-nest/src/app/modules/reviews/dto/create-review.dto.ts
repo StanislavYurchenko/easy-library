@@ -1,13 +1,12 @@
 import { IsArray, IsMongoId, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
-import { ObjectId } from 'mongoose';
-import { IBook, IReview, IUser } from '@libs/api-interface';
+import { IReview } from '../interface/review.interface';
 
 export class CreateReviewDto implements Required<IReview> {
-  id!: ObjectId;
+  id!: string;
 
   @IsMongoId()
   @IsNotEmpty()
-  readonly author!: IUser;
+  readonly author!: string;
 
   @IsString()
   @MinLength(3)
@@ -16,16 +15,16 @@ export class CreateReviewDto implements Required<IReview> {
   readonly comment!: string;
 
   @IsMongoId()
-  @IsOptional()
-  readonly book!: IBook;
+  @IsNotEmpty()
+  readonly book!: string;
 
   @IsArray()
   @IsMongoId({ each: true })
   @IsOptional()
-  readonly likes!: IUser[];
+  readonly likes!: string[];
 
   @IsArray()
   @IsMongoId({ each: true })
   @IsOptional()
-  readonly dislikes!: IUser[];
+  readonly dislikes!: string[];
 }

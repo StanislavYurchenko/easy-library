@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IUser } from '@libs/api-interface';
 import { TableName } from '../../../libs';
 import { CreateUserDto } from '../dto/create-user-dto';
 import { UpdateUserDto } from '../dto/update-user-dto';
+import { IUser } from '../interface/user.interface';
 import { UserDocument } from '../schema/user.schema';
 
 @Injectable()

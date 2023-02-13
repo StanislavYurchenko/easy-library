@@ -1,17 +1,15 @@
-import { User } from "./user.interface";
-
-export interface Book {
+export interface IBook {
   readonly id: string;
   readonly title: string;
   readonly author: string;
   readonly description: string;
   readonly rating?: number;
   readonly available?: boolean;
-  readonly inuse?: User[];
-  readonly read?: User[];
-  readonly wish?: User[];
-  readonly likes?: User[];
-  readonly dislikes?: User[];
+  readonly inuse?: string[];
+  readonly read?: string[];
+  readonly wish?: string[];
+  readonly likes?: string[];
+  readonly dislikes?: string[];
   readonly total_quantity?: number;
   readonly rented_quantity?: number;
 }

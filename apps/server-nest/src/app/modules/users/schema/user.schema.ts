@@ -1,14 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, ObjectId, Types } from 'mongoose';
-import { IBook, IReview, IUser } from '@libs/api-interface';
+import { HydratedDocument } from 'mongoose';
+import { Exclude, Transform } from 'class-transformer';
 import { defaultSchemaOptions } from '@server-nest/configs';
-import { TableName, validateEmail } from '../../../libs';
+import { validateEmail } from '../../../libs';
+import { IUser } from '../interface/user.interface';
 
 @Schema({
   ...defaultSchemaOptions,
 })
-export class User implements Required<IUser> {
-  id!: ObjectId;
+class User implements Required<IUser> {
+  @Transform(({ value }) => value.toString())
+  id!: string;
 
   @Prop({ type: String, trim: true, required: true })
   name!: string;
@@ -23,23 +25,12 @@ export class User implements Required<IUser> {
   })
   email!: string;
 
-  @Prop({ type: String, trim: true })
+  @Prop({ type: String, trim: true, required: true })
+  @Exclude()
   password!: string;
 
   @Prop({ type: String, trim: true })
   phone!: string;
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.Book }], autopopulate: false })
-  inuse_books!: IBook[];
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.Book }], autopopulate: false })
-  read_books!: IBook[];
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.Book }], autopopulate: false })
-  wish_books!: IBook[];
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.Review }], autopopulate: false })
-  reviews!: IReview[];
 }
 
 export type UserDocument = HydratedDocument<User>;
