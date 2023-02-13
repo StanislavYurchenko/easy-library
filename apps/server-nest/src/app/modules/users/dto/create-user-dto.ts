@@ -1,19 +1,8 @@
-import { ObjectId } from 'mongoose';
-import {
-  IsArray,
-  IsEmail,
-  IsMongoId,
-  IsNotEmpty,
-  IsOptional,
-  IsPhoneNumber,
-  IsString,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
-import { IBook, IReview, IUser } from '@libs/api-interface';
+import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, MaxLength, MinLength } from 'class-validator';
+import { IUser } from '../interface/user.interface';
 
 export class CreateUserDto implements Required<IUser> {
-  id!: ObjectId;
+  id!: string;
 
   @IsString()
   @MinLength(3)
@@ -33,24 +22,4 @@ export class CreateUserDto implements Required<IUser> {
   @IsPhoneNumber()
   @IsOptional()
   readonly phone!: string;
-
-  @IsArray()
-  @IsMongoId({ each: true })
-  @IsOptional()
-  readonly inuse_books!: IBook[];
-
-  @IsArray()
-  @IsMongoId({ each: true })
-  @IsOptional()
-  readonly read_books!: IBook[];
-
-  @IsArray()
-  @IsMongoId({ each: true })
-  @IsOptional()
-  readonly wish_books!: IBook[];
-
-  @IsArray()
-  @IsMongoId({ each: true })
-  @IsOptional()
-  readonly reviews!: IReview[];
 }

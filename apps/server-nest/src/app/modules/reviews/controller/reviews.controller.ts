@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Controller, Get, Post, Body, Param, Delete, Res, Logger, HttpStatus, Put } from '@nestjs/common';
 import { Response } from 'express';
-import { ApiEndpoints, ApiRes, IReview } from '@libs/api-interface';
+import { ApiEndpoints, ApiRes } from '@libs/api-interface';
 import { CreateReviewDto } from '../dto/create-review.dto';
 import { UpdateReviewDto } from '../dto/update-review.dto';
 import { ReviewsService } from '../service/reviews.service';
+import { IReview } from '../interface/review.interface';
 
 @Controller(ApiEndpoints.reviews)
 export class ReviewsController {
@@ -20,7 +21,7 @@ export class ReviewsController {
       return response.status(HttpStatus.CREATED).json({
         statusCode: HttpStatus.CREATED,
         message: 'Review has been created successfully',
-        data: newReview as any as IReview,
+        data: newReview,
       });
     } catch (err: any) {
       return response.status(HttpStatus.BAD_REQUEST).json({
@@ -45,7 +46,7 @@ export class ReviewsController {
       return response.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
         message: 'Review has been successfully updated',
-        data: existingReview as any as IReview,
+        data: existingReview,
       });
     } catch (err: any) {
       return response.status(err.status).json(err.response);
@@ -62,7 +63,7 @@ export class ReviewsController {
       return response.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
         message: 'All reviews data found successfully',
-        data: reviewsData as any as IReview[],
+        data: reviewsData,
       });
     } catch (err: any) {
       return response.status(err.status).json(err.response);
@@ -79,7 +80,7 @@ export class ReviewsController {
       return response.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
         message: 'Review found successfully',
-        data: existingReview as any as IReview,
+        data: existingReview,
       });
     } catch (err: any) {
       return response.status(err.status).json(err.response);
@@ -96,7 +97,7 @@ export class ReviewsController {
       return response.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
         message: 'Review deleted successfully',
-        data: deletedReview as any as IReview,
+        data: deletedReview,
       });
     } catch (err: any) {
       return response.status(err.status).json(err.response);

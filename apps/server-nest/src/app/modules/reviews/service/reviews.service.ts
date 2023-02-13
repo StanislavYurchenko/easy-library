@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IReview } from '@libs/api-interface';
 import { TableName } from '../../../libs';
 import { ReviewDocument } from '../schema/review.schema';
 import { CreateReviewDto } from '../dto/create-review.dto';
 import { UpdateReviewDto } from '../dto/update-review.dto';
+import { IReview } from '../interface/review.interface';
 
 @Injectable()
 export class ReviewsService {

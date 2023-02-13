@@ -1,29 +1,31 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, ObjectId, Types } from 'mongoose';
-import { IBook, IReview, IUser } from '@libs/api-interface';
+import { HydratedDocument, Types } from 'mongoose';
+import { Transform } from 'class-transformer';
 import { defaultSchemaOptions } from '@server-nest/configs';
 import { TableName } from '../../../libs';
+import { IReview } from '../interface/review.interface';
 
 @Schema({
   ...defaultSchemaOptions,
 })
 class Review implements Required<IReview> {
-  id!: ObjectId;
+  @Transform(({ value }) => value.toString())
+  id!: string;
 
   @Prop({ type: Types.ObjectId, ref: TableName.User, required: true, autopopulate: true })
-  author!: IUser;
+  author!: string;
 
   @Prop({ type: String, trim: true, required: true })
   comment!: string;
 
   @Prop({ type: Types.ObjectId, ref: TableName.Book, required: true, autopopulate: true })
-  book!: IBook;
+  book!: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }], autopopulate: true })
-  likes!: IUser[];
+  likes!: string[];
 
   @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }], autopopulate: true })
-  dislikes!: IUser[];
+  dislikes!: string[];
 }
 
 export type ReviewDocument = HydratedDocument<Review>;

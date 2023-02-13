@@ -1,11 +1,11 @@
-import { ObjectId } from "mongoose";
-import { IBook, IUser } from ".";
+import { Book } from "./book.interface";
+import { User } from "./user.interface";
 
-export interface IReview {
-  readonly id: ObjectId;
-  readonly author: IUser;
+export interface Review {
+  readonly id: string;
+  readonly author: User;
   readonly comment: string;
-  readonly book: IBook;
-  readonly likes?: IUser[];
-  readonly dislikes?: IUser[];
+  readonly book: Book;
+  readonly likes?: User[];
+  readonly dislikes?: User[];
 }

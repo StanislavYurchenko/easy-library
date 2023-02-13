@@ -1,9 +1,10 @@
 import { Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { ApiEndpoints, ApiRes, IUser } from '@libs/api-interface';
+import { ApiEndpoints, ApiRes } from '@libs/api-interface';
 import { UsersService } from '../service/users.service';
 import { CreateUserDto } from '../dto/create-user-dto';
 import { UpdateUserDto } from '../dto/update-user-dto';
+import { IUser } from '../interface/user.interface';
 
 @Controller(ApiEndpoints.users)
 export class UsersController {

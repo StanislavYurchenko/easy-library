@@ -36,6 +36,8 @@
     }
   },
   "rules": {
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
     "jasmine/new-line-before-expect": 0,
     "jasmine/no-unsafe-spy": 0,
     "jasmine/new-line-between-declarations": 0,

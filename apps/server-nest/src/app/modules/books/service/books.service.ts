@@ -1,12 +1,11 @@
-/* eslint-disable import/no-cycle */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IBook } from '@libs/api-interface';
 import { TableName } from '../../../libs';
 import { BookDocument } from '../schema/book.schema';
 import { CreateBookDto } from '../dto/create-book.dto';
 import { UpdateBookDto } from '../dto/update-book.dto';
+import { IBook } from '../interface/book.interface';
 
 @Injectable()
 export class BooksService {
