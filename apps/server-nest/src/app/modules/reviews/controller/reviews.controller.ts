@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Controller, Get, Post, Body, Param, Delete, Res, Logger, HttpStatus, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Res, Logger, HttpStatus, Put, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiEndpoints, ApiRes } from '@libs/api-interface';
 import { CreateReviewDto } from '../dto/create-review.dto';
 import { UpdateReviewDto } from '../dto/update-review.dto';
 import { ReviewsService } from '../service/reviews.service';
 import { IReview } from '../interface/review.interface';
+import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller(ApiEndpoints.reviews)
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
