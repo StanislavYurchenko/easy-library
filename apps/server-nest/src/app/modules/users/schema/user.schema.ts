@@ -26,7 +26,6 @@ class User implements Required<IUser> {
   email!: string;
 
   @Prop({ type: String, trim: true, required: true })
-  @Exclude()
   password!: string;
 
   @Prop({ type: String, trim: true })

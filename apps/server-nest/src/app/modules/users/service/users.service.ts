@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as bcrypt from 'bcrypt';
 import { TableName } from '../../../libs';
 import { CreateUserDto } from '../dto/create-user-dto';
 import { UpdateUserDto } from '../dto/update-user-dto';
@@ -12,9 +13,14 @@ export class UsersService {
   constructor(@InjectModel(TableName.User) private readonly userModel: Model<UserDocument>) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<IUser> {
-    const newUser = await new this.userModel(createUserDto);
+    const hash = await this.hashPassword(createUserDto.password);
 
-    return newUser.save();
+    // eslint-disable-next-line no-param-reassign
+    createUserDto.password = hash;
+
+    const newUser = await new this.userModel(createUserDto).save();
+
+    return newUser;
   }
 
   async updateUser(userId: string, updateUserDto: UpdateUserDto): Promise<IUser> {
@@ -44,7 +50,7 @@ export class UsersService {
       throw new NotFoundException(`User #${userId} not found`);
     }
 
-    return existingUser;
+    return existingUser.toObject();
   }
 
   async deleteUser(userId: string): Promise<IUser> {
@@ -64,6 +70,10 @@ export class UsersService {
       throw new NotFoundException(`User with email: ${email} not found!`);
     }
 
-    return userData;
+    return userData.toObject();
+  }
+
+  private async hashPassword(password: string): Promise<string> {
+    return bcrypt.hash(password, 10);
   }
 }

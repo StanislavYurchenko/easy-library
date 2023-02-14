@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiEndpoints, ApiRes } from '@libs/api-interface';
 import { UsersService } from '../service/users.service';
 import { CreateUserDto } from '../dto/create-user-dto';
 import { UpdateUserDto } from '../dto/update-user-dto';
 import { IUser } from '../interface/user.interface';
+import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
 
 @Controller(ApiEndpoints.users)
 export class UsersController {
@@ -30,6 +31,7 @@ export class UsersController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('/:id')
   async updateUser(
     @Res() response: Response<ApiRes<IUser>>,
@@ -51,6 +53,7 @@ export class UsersController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getUsers(@Res() response: Response<ApiRes<IUser[]>>) {
     try {
@@ -68,6 +71,7 @@ export class UsersController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/:id')
   async getUser(@Res() response: Response<ApiRes<IUser>>, @Param('id') userId: string) {
     try {
@@ -85,6 +89,7 @@ export class UsersController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('/:id')
   async deleteUser(@Res() response: Response<ApiRes<IUser>>, @Param('id') userId: string) {
     try {
