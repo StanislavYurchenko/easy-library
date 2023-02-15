@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { Exclude, Transform } from 'class-transformer';
+import { Transform } from 'class-transformer';
 import { defaultSchemaOptions } from '@server-nest/configs';
 import { validateEmail } from '../../../libs';
 import { IUser } from '../interface/user.interface';
@@ -25,7 +25,7 @@ class User implements Required<IUser> {
   })
   email!: string;
 
-  @Prop({ type: String, trim: true, required: true })
+  @Prop({ type: String, trim: true, required: true, select: false })
   password!: string;
 
   @Prop({ type: String, trim: true })

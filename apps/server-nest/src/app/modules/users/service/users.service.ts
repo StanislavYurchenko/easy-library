@@ -73,6 +73,16 @@ export class UsersService {
     return userData.toObject();
   }
 
+  async getUserByEmailWithPassword(email: string): Promise<IUser> {
+    const userData = await this.userModel.findOne({ email }).select('+password');
+
+    if (!userData) {
+      throw new NotFoundException(`User with email: ${email} not found!`);
+    }
+
+    return userData.toObject();
+  }
+
   private async hashPassword(password: string): Promise<string> {
     return bcrypt.hash(password, 10);
   }
