@@ -5,7 +5,6 @@
   "scripts": {
     "nx": "nx",
     "build": "npm run build:client && npm run build:server",
-    "serve": "npm run serve:client && npm run serve:server",
     "lint": "npm run lint:client && npm run lint:server",
     "test": "npm run test:client && npm run test:server",
     "build:client": "nx build client-angular",
@@ -90,6 +89,7 @@
     "@nestjs/mongoose": "^9.2.1",
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/swagger": "^6.2.1",
     "axios": "^1.0.0",
     "bcrypt": "^5.1.0",
     "class-transformer": "^0.5.1",

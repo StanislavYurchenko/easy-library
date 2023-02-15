@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Controller, Get, Post, Body, Param, Delete, Res, Logger, HttpStatus, Put, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { ApiEndpoints, ApiRes } from '@libs/api-interface';
 import { CreateReviewDto } from '../dto/create-review.dto';
 import { UpdateReviewDto } from '../dto/update-review.dto';
@@ -9,11 +10,14 @@ import { IReview } from '../interface/review.interface';
 import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+@ApiTags(ApiEndpoints.reviews)
 @Controller(ApiEndpoints.reviews)
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   @Post()
+  @ApiBody({ type: CreateReviewDto })
   async createReview(@Res() response: Response<ApiRes<IReview>>, @Body() createReviewDto: CreateReviewDto) {
     try {
       const newReview = await this.reviewsService.createReview(createReviewDto);
@@ -35,6 +39,7 @@ export class ReviewsController {
   }
 
   @Put('/:id')
+  @ApiBody({ type: UpdateReviewDto })
   async updateReview(
     @Res() response: Response<ApiRes<IReview>>,
     @Param('id') reviewId: string,

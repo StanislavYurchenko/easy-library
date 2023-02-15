@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Param, Delete, Res, Logger, HttpStatus, Put, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { ApiEndpoints, ApiRes } from '@libs/api-interface';
 import { BooksService } from '../service/books.service';
 import { CreateBookDto } from '../dto/create-book.dto';
@@ -8,11 +9,14 @@ import { IBook } from '../interface/book.interface';
 import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+@ApiTags(ApiEndpoints.books)
 @Controller(ApiEndpoints.books)
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
   @Post()
+  @ApiBody({ type: CreateBookDto })
   async createBook(@Res() response: Response<ApiRes<IBook>>, @Body() createBookDto: CreateBookDto) {
     try {
       const newBook = await this.booksService.createBook(createBookDto);
@@ -34,6 +38,7 @@ export class BooksController {
   }
 
   @Put('/:id')
+  @ApiBody({ type: UpdateBookDto })
   async updateBook(
     @Res() response: Response<ApiRes<IBook>>,
     @Param('id') bookId: string,

@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
+import { ApiBasicAuth, ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { ApiEndpoints, ApiRes } from '@libs/api-interface';
 import { UsersService } from '../service/users.service';
 import { CreateUserDto } from '../dto/create-user-dto';
@@ -7,11 +8,13 @@ import { UpdateUserDto } from '../dto/update-user-dto';
 import { IUser } from '../interface/user.interface';
 import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
 
+@ApiTags(ApiEndpoints.users)
 @Controller(ApiEndpoints.users)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @ApiBody({ type: CreateUserDto })
   async createUser(@Res() response: Response<ApiRes<IUser>>, @Body() createUserDto: CreateUserDto) {
     try {
       const newUser = await this.usersService.createUser(createUserDto);
@@ -32,7 +35,9 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Put('/:id')
+  @ApiBody({ type: UpdateUserDto })
   async updateUser(
     @Res() response: Response<ApiRes<IUser>>,
     @Param('id') userId: string,
@@ -54,6 +59,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get()
   async getUsers(@Res() response: Response<ApiRes<IUser[]>>) {
     try {
@@ -72,6 +78,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get('/:id')
   async getUser(@Res() response: Response<ApiRes<IUser>>, @Param('id') userId: string) {
     try {
@@ -90,6 +97,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete('/:id')
   async deleteUser(@Res() response: Response<ApiRes<IUser>>, @Param('id') userId: string) {
     try {
