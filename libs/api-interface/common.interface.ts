@@ -1,12 +1,6 @@
-export interface ApiRes<D> {
+export type ApiRes<D> = {
   readonly statusCode: number;
   readonly message: string;
   readonly data?: D;
-  readonly error?: ApiError;
-}
-
-export interface ApiError {
-  readonly statusCode: number;
-  readonly message: string;
-  readonly error?: string;
+  readonly error?: any;
 }

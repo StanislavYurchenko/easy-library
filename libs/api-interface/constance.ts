@@ -4,4 +4,17 @@ export enum ApiEndpoints {
   users = 'users',
   books = 'books',
   reviews = 'reviews',
+  auth = 'auth',
 }
+
+export enum AuthEndpoints {
+  login = 'login',
+  logout = 'logout',
+  signin = 'signin',
+  signout = 'signout',
+}
+
+export enum UserEndpoints {
+  profile = 'profile',
+}
+

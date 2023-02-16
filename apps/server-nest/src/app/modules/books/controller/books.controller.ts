@@ -1,5 +1,14 @@
 import { Controller, Get, Post, Body, Param, Delete, Res, Logger, HttpStatus, Put, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { ApiEndpoints, ApiRes } from '@libs/api-interface';
 import { BooksService } from '../service/books.service';
 import { CreateBookDto } from '../dto/create-book.dto';
@@ -8,11 +17,16 @@ import { IBook } from '../interface/book.interface';
 import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+@ApiTags(ApiEndpoints.books)
 @Controller(ApiEndpoints.books)
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
   @Post()
+  @ApiBody({ type: CreateBookDto })
+  @ApiCreatedResponse({ description: 'Book has been created successfully' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async createBook(@Res() response: Response<ApiRes<IBook>>, @Body() createBookDto: CreateBookDto) {
     try {
       const newBook = await this.booksService.createBook(createBookDto);
@@ -25,15 +39,15 @@ export class BooksController {
         data: newBook,
       });
     } catch (err: any) {
-      return response.status(HttpStatus.BAD_REQUEST).json({
-        statusCode: HttpStatus.BAD_REQUEST,
-        message: 'Error: Book not created!',
-        ...err.response,
-      });
+      return response.status(err.status).json(err.response);
     }
   }
 
   @Put('/:id')
+  @ApiBody({ type: UpdateBookDto })
+  @ApiOkResponse({ description: 'Book has been successfully updated' })
+  @ApiNotFoundResponse({ description: 'Book #<id> not found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async updateBook(
     @Res() response: Response<ApiRes<IBook>>,
     @Param('id') bookId: string,
@@ -55,6 +69,9 @@ export class BooksController {
   }
 
   @Get()
+  @ApiOkResponse({ description: 'All books found successfully' })
+  @ApiNotFoundResponse({ description: 'Books data not found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async getBooks(@Res() response: Response<ApiRes<IBook[]>>) {
     try {
       const booksData = await this.booksService.getAllBooks();
@@ -72,6 +89,9 @@ export class BooksController {
   }
 
   @Get('/:id')
+  @ApiOkResponse({ description: 'User found successfully' })
+  @ApiNotFoundResponse({ description: 'Book #<id> not found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async getBook(@Res() response: Response<ApiRes<IBook>>, @Param('id') bookId: string) {
     try {
       const existingBook = await this.booksService.getBook(bookId);
@@ -89,6 +109,9 @@ export class BooksController {
   }
 
   @Delete('/:id')
+  @ApiOkResponse({ description: 'Book deleted successfully' })
+  @ApiNotFoundResponse({ description: 'Book #<id> not found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async deleteBook(@Res() response: Response<ApiRes<IBook>>, @Param('id') bookId: string) {
     try {
       const deletedBook = await this.booksService.deleteBook(bookId);

@@ -1,6 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Controller, Get, Post, Body, Param, Delete, Res, Logger, HttpStatus, Put, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { ApiEndpoints, ApiRes } from '@libs/api-interface';
 import { CreateReviewDto } from '../dto/create-review.dto';
 import { UpdateReviewDto } from '../dto/update-review.dto';
@@ -8,12 +16,17 @@ import { ReviewsService } from '../service/reviews.service';
 import { IReview } from '../interface/review.interface';
 import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard)
 @Controller(ApiEndpoints.reviews)
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+@ApiTags(ApiEndpoints.reviews)
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   @Post()
+  @ApiBody({ type: CreateReviewDto })
+  @ApiCreatedResponse({ description: 'Review has been created successfully' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async createReview(@Res() response: Response<ApiRes<IReview>>, @Body() createReviewDto: CreateReviewDto) {
     try {
       const newReview = await this.reviewsService.createReview(createReviewDto);
@@ -26,15 +39,15 @@ export class ReviewsController {
         data: newReview,
       });
     } catch (err: any) {
-      return response.status(HttpStatus.BAD_REQUEST).json({
-        statusCode: HttpStatus.BAD_REQUEST,
-        message: 'Error: Review not created!',
-        ...err.response,
-      });
+      return response.status(err.status).json(err.response);
     }
   }
 
   @Put('/:id')
+  @ApiBody({ type: UpdateReviewDto })
+  @ApiOkResponse({ description: 'Review has been successfully updated' })
+  @ApiNotFoundResponse({ description: 'Review #<id> not found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async updateReview(
     @Res() response: Response<ApiRes<IReview>>,
     @Param('id') reviewId: string,
@@ -56,6 +69,9 @@ export class ReviewsController {
   }
 
   @Get()
+  @ApiOkResponse({ description: 'All reviews data found successfully' })
+  @ApiNotFoundResponse({ description: 'Reviews data not found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async getReviews(@Res() response: Response<ApiRes<IReview[]>>) {
     try {
       const reviewsData = await this.reviewsService.getAllReviews();
@@ -73,6 +89,9 @@ export class ReviewsController {
   }
 
   @Get('/:id')
+  @ApiOkResponse({ description: 'Review found successfully' })
+  @ApiNotFoundResponse({ description: 'Review #<id> not found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async getReview(@Res() response: Response<ApiRes<IReview>>, @Param('id') reviewId: string) {
     try {
       const existingReview = await this.reviewsService.getReview(reviewId);
@@ -90,6 +109,9 @@ export class ReviewsController {
   }
 
   @Delete('/:id')
+  @ApiOkResponse({ description: 'Review deleted successfully' })
+  @ApiNotFoundResponse({ description: 'Review #<id> not found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async deleteReview(@Res() response: Response<ApiRes<IReview>>, @Param('id') reviewId: string) {
     try {
       const deletedReview = await this.reviewsService.deleteReview(reviewId);

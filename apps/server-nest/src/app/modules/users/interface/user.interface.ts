@@ -5,3 +5,7 @@ export interface IUser {
   readonly password?: string;
   readonly phone?: string;
 }
+
+export interface RequestWithUser extends Request {
+  user: IUser;
+}
