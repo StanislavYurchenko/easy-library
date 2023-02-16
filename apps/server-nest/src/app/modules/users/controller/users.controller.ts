@@ -1,20 +1,69 @@
-import { Body, Controller, Delete, Get, HttpStatus, Logger, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Logger,
+  NotFoundException,
+  Param,
+  Post,
+  Put,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { Response } from 'express';
-import { ApiBasicAuth, ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
-import { ApiEndpoints, ApiRes } from '@libs/api-interface';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { ApiEndpoints, ApiRes, UserEndpoints } from '@libs/api-interface';
 import { UsersService } from '../service/users.service';
 import { CreateUserDto } from '../dto/create-user-dto';
 import { UpdateUserDto } from '../dto/update-user-dto';
-import { IUser } from '../interface/user.interface';
+import { IUser, RequestWithUser } from '../interface/user.interface';
 import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
 
-@ApiTags(ApiEndpoints.users)
 @Controller(ApiEndpoints.users)
+@ApiTags(ApiEndpoints.users)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Get(UserEndpoints.profile)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'Profile found successfully' })
+  @ApiNotFoundResponse({ description: 'Profile not found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  getProfile(@Req() { user }: RequestWithUser, @Res() response: Response<ApiRes<IUser>>) {
+    try {
+      if (!user) {
+        throw new NotFoundException('Profile not found');
+      }
+
+      Logger.log(`🚀 UserController: Profile ${user.email} has been got`);
+
+      return response.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        message: 'Profile found successfully',
+        data: user,
+      });
+    } catch (err: any) {
+      return response.status(err.status).json(err.response);
+    }
+  }
+
   @Post()
   @ApiBody({ type: CreateUserDto })
+  @ApiCreatedResponse({ description: 'User has been created successfully' })
+  @ApiBadRequestResponse({ description: 'Error: User not created!' })
   async createUser(@Res() response: Response<ApiRes<IUser>>, @Body() createUserDto: CreateUserDto) {
     try {
       const newUser = await this.usersService.createUser(createUserDto);
@@ -22,11 +71,11 @@ export class UsersController {
       Logger.log(`🚀 UserController: User ${newUser.email} has been created successfully`);
 
       return response.status(HttpStatus.CREATED).json({
-        statusCode: HttpStatus.OK,
+        statusCode: HttpStatus.CREATED,
         message: 'User has been created successfully',
         data: newUser,
       });
-    } catch (err) {
+    } catch (err: any) {
       return response.status(HttpStatus.BAD_REQUEST).json({
         statusCode: HttpStatus.BAD_REQUEST,
         message: 'Error: User not created!',
@@ -34,10 +83,13 @@ export class UsersController {
     }
   }
 
+  @Put('/:id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @Put('/:id')
   @ApiBody({ type: UpdateUserDto })
+  @ApiOkResponse({ description: 'User has been successfully updated' })
+  @ApiNotFoundResponse({ description: 'User #<id> not found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async updateUser(
     @Res() response: Response<ApiRes<IUser>>,
     @Param('id') userId: string,
@@ -58,9 +110,12 @@ export class UsersController {
     }
   }
 
+  @Get()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @Get()
+  @ApiOkResponse({ description: 'All users data found successfully' })
+  @ApiNotFoundResponse({ description: 'Users data not found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async getUsers(@Res() response: Response<ApiRes<IUser[]>>) {
     try {
       const usersData = await this.usersService.getAllUsers();
@@ -77,9 +132,12 @@ export class UsersController {
     }
   }
 
+  @Get('/:id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @Get('/:id')
+  @ApiOkResponse({ description: 'User found successfully' })
+  @ApiNotFoundResponse({ description: 'User #<id> not found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async getUser(@Res() response: Response<ApiRes<IUser>>, @Param('id') userId: string) {
     try {
       const existingUser = await this.usersService.getUser(userId);
@@ -96,9 +154,12 @@ export class UsersController {
     }
   }
 
+  @Delete('/:id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @Delete('/:id')
+  @ApiOkResponse({ description: 'User deleted successfully' })
+  @ApiNotFoundResponse({ description: 'User #<id> not found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async deleteUser(@Res() response: Response<ApiRes<IUser>>, @Param('id') userId: string) {
     try {
       const deletedUser = await this.usersService.deleteUser(userId);

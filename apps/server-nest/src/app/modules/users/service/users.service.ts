@@ -18,9 +18,11 @@ export class UsersService {
     // eslint-disable-next-line no-param-reassign
     createUserDto.password = hash;
 
-    const newUser = await new this.userModel(createUserDto).save();
+    const newUser = await (await new this.userModel(createUserDto).save()).toObject();
 
-    return newUser;
+    const { password, ...user } = newUser;
+
+    return user;
   }
 
   async updateUser(userId: string, updateUserDto: UpdateUserDto): Promise<IUser> {
@@ -60,7 +62,7 @@ export class UsersService {
       throw new NotFoundException(`User #${userId} not found`);
     }
 
-    return deletedUser;
+    return deletedUser.toObject();
   }
 
   async getUserByEmail(email: string): Promise<IUser> {

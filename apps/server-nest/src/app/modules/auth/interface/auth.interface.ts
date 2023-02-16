@@ -1,10 +1,8 @@
-import { IUser } from '../../users';
-
 export interface JwtPayload {
   sub: string;
   email: string;
 }
 
-export interface RequestWithUser extends Request {
-  user: IUser;
+export interface LoginRes {
+  access_token: string;
 }
