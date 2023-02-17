@@ -5,7 +5,8 @@ import { TableName } from '../../../libs';
 import { BookDocument } from '../schema/book.schema';
 import { CreateBookDto } from '../dto/create-book.dto';
 import { UpdateBookDto } from '../dto/update-book.dto';
-import { IBook } from '../interface/book.interface';
+import { BookAction, IBook } from '../interface/book.interface';
+import { UpdateBookUserIdListDto } from '../dto/update-book-user-id-list.dto';
 
 @Injectable()
 export class BooksService {
@@ -55,5 +56,23 @@ export class BooksService {
     }
 
     return deletedBook;
+  }
+
+  async updateBookUserIdList(bookId: string, { action, property, userId }: UpdateBookUserIdListDto): Promise<IBook> {
+    let book;
+
+    if (action === BookAction.add) {
+      book = await this.bookModel.findByIdAndUpdate(bookId, { $addToSet: { [`${property}`]: userId } }, { new: true });
+    }
+
+    if (action === BookAction.remove) {
+      book = await this.bookModel.findByIdAndUpdate(bookId, { $pull: { [`${property}`]: userId } }, { new: true });
+    }
+
+    if (!book) {
+      throw new NotFoundException(`Book #${bookId} not found`);
+    }
+
+    return book.toObject();
   }
 }

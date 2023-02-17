@@ -13,3 +13,22 @@ export interface IBook {
   readonly total_quantity?: number;
   readonly rented_quantity?: number;
 }
+
+export enum BookAction {
+  add = 'add',
+  remove = 'remove',
+}
+
+export enum BookProperty {
+  inuse = 'inuse',
+  read = 'read',
+  wish = 'wish',
+  likes = 'likes',
+  dislikes = 'dislikes',
+}
+
+export interface UpdateBookUserIdList {
+  readonly action: BookAction;
+  readonly property: BookProperty;
+  readonly userId: string;
+}
