@@ -5,7 +5,8 @@ import { TableName } from '../../../libs';
 import { ReviewDocument } from '../schema/review.schema';
 import { CreateReviewDto } from '../dto/create-review.dto';
 import { UpdateReviewDto } from '../dto/update-review.dto';
-import { IReview } from '../interface/review.interface';
+import { ReviewAction, IReview } from '../interface/review.interface';
+import { UpdateReviewUserIdListDto } from '../dto/update-review-user-id-list.dto';
 
 @Injectable()
 export class ReviewsService {
@@ -55,5 +56,34 @@ export class ReviewsService {
     }
 
     return deletedReview;
+  }
+
+  async updateReviewUserIdList(
+    reviewId: string,
+    { action, property, userId }: UpdateReviewUserIdListDto,
+  ): Promise<IReview> {
+    let review;
+
+    if (action === ReviewAction.add) {
+      review = await this.reviewModel.findByIdAndUpdate(
+        reviewId,
+        { $addToSet: { [`${property}`]: userId } },
+        { new: true },
+      );
+    }
+
+    if (action === ReviewAction.remove) {
+      review = await this.reviewModel.findByIdAndUpdate(
+        reviewId,
+        { $pull: { [`${property}`]: userId } },
+        { new: true },
+      );
+    }
+
+    if (!review) {
+      throw new NotFoundException(`Book #${reviewId} not found`);
+    }
+
+    return review.toObject();
   }
 }

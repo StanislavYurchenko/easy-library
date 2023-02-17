@@ -9,12 +9,13 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { ApiEndpoints, ApiRes } from '@libs/api-interface';
+import { ApiEndpoints, ApiRes, ReviewEndpoints } from '@libs/api-interface';
 import { CreateReviewDto } from '../dto/create-review.dto';
 import { UpdateReviewDto } from '../dto/update-review.dto';
 import { ReviewsService } from '../service/reviews.service';
 import { IReview } from '../interface/review.interface';
 import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
+import { UpdateReviewUserIdListDto } from '../dto/update-review-user-id-list.dto';
 
 @Controller(ApiEndpoints.reviews)
 @UseGuards(JwtAuthGuard)
@@ -22,6 +23,31 @@ import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
 @ApiTags(ApiEndpoints.reviews)
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
+
+  @Put(`/${ReviewEndpoints.updateReviewUserIdList}/:id`)
+  @ApiBody({ type: UpdateReviewUserIdListDto })
+  @ApiOkResponse({ description: 'Review has been successfully updated' })
+  @ApiNotFoundResponse({ description: 'Review #<id> not found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  async updateReviewUserIdList(
+    @Res() response: Response<ApiRes<IReview>>,
+    @Param('id') bookId: string,
+    @Body() updateReviewDto: UpdateReviewUserIdListDto,
+  ) {
+    try {
+      const existingReview = await this.reviewsService.updateReviewUserIdList(bookId, updateReviewDto);
+
+      Logger.log(`🚀 ReviewsController: Review ${existingReview.id} has been updated successfully`);
+
+      return response.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        message: 'Review has been successfully updated',
+        data: existingReview,
+      });
+    } catch (err: any) {
+      return response.status(err.status).json(err.response);
+    }
+  }
 
   @Post()
   @ApiBody({ type: CreateReviewDto })

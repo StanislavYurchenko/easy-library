@@ -18,3 +18,11 @@ export enum UserEndpoints {
   profile = 'profile',
 }
 
+export enum BookEndpoints {
+  updateBookUserIdList = 'updateBookUserIdList',
+}
+
+export enum ReviewEndpoints {
+  updateReviewUserIdList = 'updateReviewUserIdList',
+}
+

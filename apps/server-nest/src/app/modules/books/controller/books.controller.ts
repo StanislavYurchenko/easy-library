@@ -9,12 +9,13 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { ApiEndpoints, ApiRes } from '@libs/api-interface';
+import { ApiEndpoints, ApiRes, BookEndpoints } from '@libs/api-interface';
 import { BooksService } from '../service/books.service';
 import { CreateBookDto } from '../dto/create-book.dto';
 import { UpdateBookDto } from '../dto/update-book.dto';
 import { IBook } from '../interface/book.interface';
 import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
+import { UpdateBookUserIdListDto } from '../dto/update-book-user-id-list.dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
@@ -22,6 +23,31 @@ import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
 @Controller(ApiEndpoints.books)
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
+
+  @Put(`/${BookEndpoints.updateBookUserIdList}/:id`)
+  @ApiBody({ type: UpdateBookUserIdListDto })
+  @ApiOkResponse({ description: 'Book has been successfully updated' })
+  @ApiNotFoundResponse({ description: 'Book #<id> not found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  async updateBookUserIdList(
+    @Res() response: Response<ApiRes<IBook>>,
+    @Param('id') bookId: string,
+    @Body() updateBookDto: UpdateBookUserIdListDto,
+  ) {
+    try {
+      const existingBook = await this.booksService.updateBookUserIdList(bookId, updateBookDto);
+
+      Logger.log(`🚀 BooksController: Book ${existingBook.title} has been updated successfully`);
+
+      return response.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        message: 'Book has been successfully updated',
+        data: existingBook,
+      });
+    } catch (err: any) {
+      return response.status(err.status).json(err.response);
+    }
+  }
 
   @Post()
   @ApiBody({ type: CreateBookDto })

@@ -6,3 +6,19 @@ export interface IReview {
   readonly likes?: string[];
   readonly dislikes?: string[];
 }
+
+export enum ReviewAction {
+  add = 'add',
+  remove = 'remove',
+}
+
+export enum ReviewProperty {
+  likes = 'likes',
+  dislikes = 'dislikes',
+}
+
+export interface UpdateReviewUserIdList {
+  readonly action: ReviewAction;
+  readonly property: ReviewProperty;
+  readonly userId: string;
+}
