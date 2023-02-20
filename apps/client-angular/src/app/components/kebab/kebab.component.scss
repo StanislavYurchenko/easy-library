@@ -1,0 +1,41 @@
+.container {
+  margin-top: 40px;
+  ul {
+    list-style-type: none;
+    display: flex;
+
+    li {
+      margin-right: 16px;
+      button {
+        font-weight: bold;
+        color: dodgerblue;
+        padding: 8px 16px;
+        border: 1px solid dodgerblue;
+        border-radius: 8px;
+        &:hover {
+          cursor: pointer;
+          background: aliceblue;
+        }
+      }
+    }
+    &.list {
+      display: list-item;
+      width: 360px;
+      border: 2px solid lightgray;
+      padding: 16px;
+      li {
+        display: flex;
+        justify-content: space-between;
+        border-bottom-style: inset;
+        padding-bottom: 8px;
+      }
+    }
+  }
+}
+.flex {
+  display: flex;
+  align-items: center;
+  div, button {
+    margin-left: 16px;
+  }
+}

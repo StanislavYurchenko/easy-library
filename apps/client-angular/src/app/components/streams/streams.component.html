@@ -1,0 +1,47 @@
+<button (click)="getObservable()">get hot and cold Observable</button>
+<button (click)="getMergeStream()">run Merge Stream</button>
+<div>{{dataFromServer}}</div>
+<p *ngIf="timer$ | async as time">
+  Current time: {{ time }}
+</p>
+<p *ngIf="timerAsync$ | async as timeAsync">
+  Current Async time: {{ timeAsync }}
+</p>
+
+<h2>Converter</h2>
+<p>
+  <label for="converter">Exchanges</label>
+  <input #inputElement id="converter" type="text">
+</p>
+<p>
+  Select
+</p>
+<p>
+  <select #selectElement>
+    <option value="usd">USD</option>
+    <option value="uah">UAH</option>
+    <option value="gbp">GBP</option>
+    <option value="euro">EURO</option>
+  </select>
+</p>
+<p>
+  {{ (input$ | async) }}
+</p>
+<p>
+  {{ (select$ | async) }}
+</p>
+<h2>Merge stream</h2>
+<p>
+  {{ mergeStream$ | async | json }}
+</p>
+<h2>combineLatest stream</h2>
+<p>
+  {{ combineLatest$ | async | json }}
+</p>
+<h2>concatLatest stream</h2>
+<p>
+  {{ (concatLatest$ | async) | async | json }}
+</p>
+<p>
+  <button (click)="buffers$.next()">buffer</button>
+</p>

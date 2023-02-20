@@ -1,6 +1,8 @@
+<h3>
+  <a [routerLink]="['/kebab']">Kebab app</a>
+  <a [routerLink]="['/streams']">Hot & Cold Observables</a>
+</h3>
+
+<div *ngIf="(isLoading$ | async)">Is loading...</div>
 <router-outlet></router-outlet>
-<div class="progress" [style.width.%]="progress$ | async"></div>
-<div class="progress" [style.width.%]="progress2$ | async"></div>
-<button (click)="getData()">get data from server</button>
-<button (click)="runAsync()">run Async</button>
-<div>{{dataFromServer}}</div>
+
