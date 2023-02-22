@@ -10,8 +10,7 @@ export enum ApiEndpoints {
 export enum AuthEndpoints {
   login = 'login',
   logout = 'logout',
-  signin = 'signin',
-  signout = 'signout',
+  registration = 'registration',
 }
 
 export enum UserEndpoints {

@@ -8,12 +8,21 @@ import { IUser } from '../interface/user.interface';
 @Schema({
   ...defaultSchemaOptions,
 })
-class User implements Required<IUser> {
+export class User implements Required<IUser> {
+  constructor(user: IUser) {
+    this.id = user.id;
+    this.name = user.name;
+    this.email = user.email;
+    this.password = user.password || '';
+    this.phone = user.phone || '';
+    this.isAdmin = user.isAdmin || false;
+  }
+
   @Transform(({ value }) => value.toString())
-  id!: string;
+  readonly id!: string;
 
   @Prop({ type: String, trim: true, required: true })
-  name!: string;
+  readonly name!: string;
 
   @Prop({
     type: String,
@@ -23,13 +32,16 @@ class User implements Required<IUser> {
     required: true,
     validate: [validateEmail, 'Please fill a valid email address'],
   })
-  email!: string;
+  readonly email!: string;
 
   @Prop({ type: String, trim: true, required: true, select: false })
-  password!: string;
+  readonly password!: string;
 
-  @Prop({ type: String, trim: true })
-  phone!: string;
+  @Prop({ type: String, trim: true, default: '' })
+  readonly phone!: string;
+
+  @Prop({ type: Boolean, default: false })
+  readonly isAdmin!: boolean;
 }
 
 export type UserDocument = HydratedDocument<User>;

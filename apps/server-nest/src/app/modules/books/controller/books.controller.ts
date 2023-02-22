@@ -4,6 +4,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
@@ -16,19 +17,30 @@ import { UpdateBookDto } from '../dto/update-book.dto';
 import { IBook } from '../interface/book.interface';
 import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
 import { UpdateBookUserIdListDto } from '../dto/update-book-user-id-list.dto';
+import {
+  AbilitiesGuard,
+  CheckAbilities,
+  createBookAbility,
+  deleteBookAbility,
+  readBookAbility,
+  updateBookAbility,
+} from '../../ability';
 
-@UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 @ApiTags(ApiEndpoints.books)
+@UseGuards(JwtAuthGuard)
 @Controller(ApiEndpoints.books)
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
-  @Put(`/${BookEndpoints.updateBookUserIdList}/:id`)
   @ApiBody({ type: UpdateBookUserIdListDto })
   @ApiOkResponse({ description: 'Book has been successfully updated' })
   @ApiNotFoundResponse({ description: 'Book #<id> not found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @UseGuards(AbilitiesGuard)
+  @CheckAbilities(readBookAbility)
+  @Put(`/${BookEndpoints.updateBookUserIdList}/:id`)
   async updateBookUserIdList(
     @Res() response: Response<ApiRes<IBook>>,
     @Param('id') bookId: string,
@@ -49,10 +61,13 @@ export class BooksController {
     }
   }
 
-  @Post()
   @ApiBody({ type: CreateBookDto })
   @ApiCreatedResponse({ description: 'Book has been created successfully' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @UseGuards(AbilitiesGuard)
+  @CheckAbilities(createBookAbility)
+  @Post()
   async createBook(@Res() response: Response<ApiRes<IBook>>, @Body() createBookDto: CreateBookDto) {
     try {
       const newBook = await this.booksService.createBook(createBookDto);
@@ -69,11 +84,14 @@ export class BooksController {
     }
   }
 
-  @Put('/:id')
   @ApiBody({ type: UpdateBookDto })
   @ApiOkResponse({ description: 'Book has been successfully updated' })
   @ApiNotFoundResponse({ description: 'Book #<id> not found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @UseGuards(AbilitiesGuard)
+  @CheckAbilities(updateBookAbility)
+  @Put('/:id')
   async updateBook(
     @Res() response: Response<ApiRes<IBook>>,
     @Param('id') bookId: string,
@@ -94,10 +112,13 @@ export class BooksController {
     }
   }
 
-  @Get()
   @ApiOkResponse({ description: 'All books found successfully' })
   @ApiNotFoundResponse({ description: 'Books data not found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @UseGuards(AbilitiesGuard)
+  @CheckAbilities(readBookAbility)
+  @Get()
   async getBooks(@Res() response: Response<ApiRes<IBook[]>>) {
     try {
       const booksData = await this.booksService.getAllBooks();
@@ -114,10 +135,13 @@ export class BooksController {
     }
   }
 
-  @Get('/:id')
   @ApiOkResponse({ description: 'User found successfully' })
   @ApiNotFoundResponse({ description: 'Book #<id> not found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @UseGuards(AbilitiesGuard)
+  @CheckAbilities(readBookAbility)
+  @Get('/:id')
   async getBook(@Res() response: Response<ApiRes<IBook>>, @Param('id') bookId: string) {
     try {
       const existingBook = await this.booksService.getBook(bookId);
@@ -134,10 +158,13 @@ export class BooksController {
     }
   }
 
-  @Delete('/:id')
   @ApiOkResponse({ description: 'Book deleted successfully' })
   @ApiNotFoundResponse({ description: 'Book #<id> not found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @UseGuards(AbilitiesGuard)
+  @CheckAbilities(deleteBookAbility)
+  @Delete('/:id')
   async deleteBook(@Res() response: Response<ApiRes<IBook>>, @Param('id') bookId: string) {
     try {
       const deletedBook = await this.booksService.deleteBook(bookId);

@@ -2,9 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsMongoId, IsNumber, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 import { IBook } from '../interface/book.interface';
 
-export class CreateBookDto implements Required<IBook> {
-  id!: string;
-
+export class CreateBookDto implements Omit<IBook, 'id'> {
   @IsString()
   @MinLength(3)
   @MaxLength(30)
@@ -12,6 +10,7 @@ export class CreateBookDto implements Required<IBook> {
     type: String,
     minLength: 3,
     maxLength: 30,
+    default: 'Best practices Angular development',
   })
   readonly title!: string;
 
@@ -22,16 +21,18 @@ export class CreateBookDto implements Required<IBook> {
     type: String,
     minLength: 3,
     maxLength: 30,
+    default: 'Mr. Smith',
   })
   readonly author!: string;
 
   @IsString()
-  @MinLength(3)
+  @MinLength(10)
   @MaxLength(1000)
   @ApiProperty({
     type: String,
     minLength: 3,
     maxLength: 1000,
+    default: 'The best book about Angular',
   })
   readonly description!: string;
 
@@ -40,6 +41,7 @@ export class CreateBookDto implements Required<IBook> {
   @ApiProperty({
     type: Number,
     required: false,
+    default: 100,
   })
   readonly rating!: number;
 
@@ -48,6 +50,7 @@ export class CreateBookDto implements Required<IBook> {
   @ApiProperty({
     type: Boolean,
     required: false,
+    default: true,
   })
   readonly available!: boolean;
 
@@ -58,6 +61,7 @@ export class CreateBookDto implements Required<IBook> {
     type: [String],
     required: false,
     description: 'Should be valid MongoId array',
+    default: [],
   })
   readonly inuse!: string[];
 
@@ -68,6 +72,7 @@ export class CreateBookDto implements Required<IBook> {
     type: [String],
     required: false,
     description: 'Should be valid MongoId array',
+    default: [],
   })
   readonly read!: string[];
 
@@ -78,6 +83,7 @@ export class CreateBookDto implements Required<IBook> {
     type: [String],
     required: false,
     description: 'Should be valid MongoId array',
+    default: [],
   })
   readonly wish!: string[];
 
@@ -88,6 +94,7 @@ export class CreateBookDto implements Required<IBook> {
     type: [String],
     required: false,
     description: 'Should be valid MongoId array',
+    default: [],
   })
   readonly likes!: string[];
 
@@ -99,6 +106,7 @@ export class CreateBookDto implements Required<IBook> {
     isArray: true,
     required: false,
     description: 'Should be valid MongoId array',
+    default: [],
   })
   readonly dislikes!: string[];
 
@@ -107,6 +115,7 @@ export class CreateBookDto implements Required<IBook> {
   @ApiProperty({
     type: Number,
     required: false,
+    default: 1,
   })
   readonly total_quantity!: number;
 
@@ -115,6 +124,7 @@ export class CreateBookDto implements Required<IBook> {
   @ApiProperty({
     type: Number,
     required: false,
+    default: 0,
   })
   readonly rented_quantity!: number;
 }

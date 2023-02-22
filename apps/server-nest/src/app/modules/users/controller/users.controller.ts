@@ -19,29 +19,40 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { ForbiddenException } from '@nestjs/common/exceptions/forbidden.exception';
+import { ForbiddenError } from '@casl/ability';
 import { ApiEndpoints, ApiRes, UserEndpoints } from '@libs/api-interface';
 import { UsersService } from '../service/users.service';
 import { CreateUserDto } from '../dto/create-user-dto';
 import { UpdateUserDto } from '../dto/update-user-dto';
 import { IUser, RequestWithUser } from '../interface/user.interface';
 import { JwtAuthGuard } from '../../auth/guard/jwt-auth.guard';
+import {
+  CheckAbilities,
+  deleteUserAbility,
+  AbilitiesGuard,
+  readUserAbility,
+  updateUserAbility,
+  createUserAbility,
+} from '../../ability';
 
-@Controller(ApiEndpoints.users)
+@ApiBearerAuth()
 @ApiTags(ApiEndpoints.users)
+@UseGuards(JwtAuthGuard)
+@Controller(ApiEndpoints.users)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get(UserEndpoints.profile)
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiOkResponse({ description: 'Profile found successfully' })
   @ApiNotFoundResponse({ description: 'Profile not found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @Get(UserEndpoints.profile)
   getProfile(@Req() { user }: RequestWithUser, @Res() response: Response<ApiRes<IUser>>) {
     try {
       if (!user) {
@@ -60,10 +71,13 @@ export class UsersController {
     }
   }
 
-  @Post()
   @ApiBody({ type: CreateUserDto })
   @ApiCreatedResponse({ description: 'User has been created successfully' })
   @ApiBadRequestResponse({ description: 'Error: User not created!' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @UseGuards(AbilitiesGuard)
+  @CheckAbilities(createUserAbility)
+  @Post()
   async createUser(@Res() response: Response<ApiRes<IUser>>, @Body() createUserDto: CreateUserDto) {
     try {
       const newUser = await this.usersService.createUser(createUserDto);
@@ -83,20 +97,22 @@ export class UsersController {
     }
   }
 
-  @Put('/:id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiBody({ type: UpdateUserDto })
   @ApiOkResponse({ description: 'User has been successfully updated' })
   @ApiNotFoundResponse({ description: 'User #<id> not found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @UseGuards(AbilitiesGuard)
+  @CheckAbilities(updateUserAbility)
+  @Put('/:id')
   async updateUser(
+    @Req() request: any,
     @Res() response: Response<ApiRes<IUser>>,
     @Param('id') userId: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     try {
-      const existingUser = await this.usersService.updateUser(userId, updateUserDto);
+      const existingUser = await this.usersService.updateUser(userId, updateUserDto, request.user);
 
       Logger.log(`🚀 UserController: User ${existingUser.email} has been updated successfully`);
 
@@ -106,16 +122,21 @@ export class UsersController {
         data: existingUser,
       });
     } catch (err: any) {
+      if (err instanceof ForbiddenError) {
+        throw new ForbiddenException(err.message);
+      }
+
       return response.status(err.status).json(err.response);
     }
   }
 
-  @Get()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiOkResponse({ description: 'All users data found successfully' })
   @ApiNotFoundResponse({ description: 'Users data not found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @UseGuards(AbilitiesGuard)
+  @CheckAbilities(readUserAbility)
+  @Get()
   async getUsers(@Res() response: Response<ApiRes<IUser[]>>) {
     try {
       const usersData = await this.usersService.getAllUsers();
@@ -132,12 +153,13 @@ export class UsersController {
     }
   }
 
-  @Get('/:id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiOkResponse({ description: 'User found successfully' })
   @ApiNotFoundResponse({ description: 'User #<id> not found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @UseGuards(AbilitiesGuard)
+  @CheckAbilities(readUserAbility)
+  @Get('/:id')
   async getUser(@Res() response: Response<ApiRes<IUser>>, @Param('id') userId: string) {
     try {
       const existingUser = await this.usersService.getUser(userId);
@@ -154,12 +176,13 @@ export class UsersController {
     }
   }
 
-  @Delete('/:id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiOkResponse({ description: 'User deleted successfully' })
   @ApiNotFoundResponse({ description: 'User #<id> not found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @UseGuards(AbilitiesGuard)
+  @CheckAbilities(deleteUserAbility)
+  @Delete('/:id')
   async deleteUser(@Res() response: Response<ApiRes<IUser>>, @Param('id') userId: string) {
     try {
       const deletedUser = await this.usersService.deleteUser(userId);

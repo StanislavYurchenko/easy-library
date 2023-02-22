@@ -6,12 +6,14 @@ export class UpdateBookUserIdListDto implements UpdateBookUserIdList {
   @IsEnum(BookAction)
   @ApiProperty({
     enum: BookAction,
+    default: BookAction.add,
   })
   readonly action!: BookAction;
 
   @IsEnum(BookProperty)
   @ApiProperty({
     enum: BookProperty,
+    default: BookProperty.inuse,
   })
   readonly property!: BookProperty;
 
@@ -19,6 +21,7 @@ export class UpdateBookUserIdListDto implements UpdateBookUserIdList {
   @ApiProperty({
     type: String,
     description: 'Should be valid MongoId',
+    default: 'Put here user mongoId',
   })
   readonly userId!: string;
 }

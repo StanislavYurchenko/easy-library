@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import MongooseAutopopulate from 'mongoose-autopopulate';
 import { TableName } from '../../libs';
+import { AbilityModule } from '../ability';
 import { ReviewsController } from './controller/reviews.controller';
 import { ReviewSchema } from './schema/review.schema';
 import { ReviewsService } from './service/reviews.service';
@@ -14,6 +15,7 @@ import { ReviewsService } from './service/reviews.service';
         useFactory: () => ReviewSchema.plugin(MongooseAutopopulate),
       },
     ]),
+    AbilityModule,
   ],
   controllers: [ReviewsController],
   providers: [ReviewsService],

@@ -4,6 +4,7 @@ export interface IUser {
   readonly email: string;
   readonly password?: string;
   readonly phone?: string;
+  readonly isAdmin?: boolean;
 }
 
 export interface RequestWithUser extends Request {
