@@ -7,6 +7,7 @@ export class LoginDto {
     type: String,
     uniqueItems: true,
     description: 'Should be valid and unique email',
+    default: 'super@mail.com',
   })
   readonly email!: string;
 
@@ -16,6 +17,7 @@ export class LoginDto {
     type: String,
     minLength: 3,
     maxLength: 30,
+    default: '12345678',
   })
   password!: string;
 }

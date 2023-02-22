@@ -9,6 +9,7 @@ export class CreateReviewDto implements Required<IReview> {
   @ApiProperty({
     type: String,
     description: 'Should be valid MongoId',
+    default: 'User mongoId',
   })
   readonly author!: string;
 
@@ -19,6 +20,7 @@ export class CreateReviewDto implements Required<IReview> {
     type: String,
     minLength: 3,
     maxLength: 300,
+    default: 'This is the best book about Angular forever',
   })
   readonly comment!: string;
 
@@ -26,6 +28,7 @@ export class CreateReviewDto implements Required<IReview> {
   @ApiProperty({
     type: String,
     description: 'Should be valid MongoId',
+    default: 'Book mongoId',
   })
   readonly book!: string;
 
@@ -36,6 +39,7 @@ export class CreateReviewDto implements Required<IReview> {
     type: [String],
     required: false,
     description: 'Should be valid MongoId array',
+    default: [],
   })
   readonly likes!: string[];
 
@@ -46,6 +50,7 @@ export class CreateReviewDto implements Required<IReview> {
     type: [String],
     required: false,
     description: 'Should be valid MongoId array',
+    default: [],
   })
   readonly dislikes!: string[];
 }

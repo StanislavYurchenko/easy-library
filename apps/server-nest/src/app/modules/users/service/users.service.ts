@@ -1,31 +1,40 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import * as bcrypt from 'bcrypt';
+import { hash } from 'bcrypt';
+import { ForbiddenError } from '@casl/ability';
 import { TableName } from '../../../libs';
 import { CreateUserDto } from '../dto/create-user-dto';
 import { UpdateUserDto } from '../dto/update-user-dto';
 import { IUser } from '../interface/user.interface';
-import { UserDocument } from '../schema/user.schema';
+import { User, UserDocument } from '../schema/user.schema';
+import { AbilityFactory, Actions } from '../../ability';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(TableName.User) private readonly userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(TableName.User) private readonly userModel: Model<UserDocument>,
+    private readonly abilityFactory: AbilityFactory,
+  ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<IUser> {
-    const hash = await this.hashPassword(createUserDto.password);
+    const hashedPassword = await this.hashPassword(createUserDto.password);
 
     // eslint-disable-next-line no-param-reassign
-    createUserDto.password = hash;
+    createUserDto.password = hashedPassword;
 
-    const newUser = await (await new this.userModel(createUserDto).save()).toObject();
-
-    const { password, ...user } = newUser;
+    const newUser = await new this.userModel(createUserDto).save();
+    const { password, ...user } = newUser.toObject();
 
     return user;
   }
 
-  async updateUser(userId: string, updateUserDto: UpdateUserDto): Promise<IUser> {
+  async updateUser(userId: string, updateUserDto: UpdateUserDto, currentUser: IUser): Promise<IUser> {
+    const ability = this.abilityFactory.defineAbility(currentUser);
+    const userToUpdate = new User(await this.getUser(userId));
+
+    ForbiddenError.from(ability).setMessage('it is forbidden for you').throwUnlessCan(Actions.Update, userToUpdate);
+
     const existingUser = await this.userModel.findByIdAndUpdate(userId, updateUserDto, { new: true });
 
     if (!existingUser) {
@@ -86,6 +95,6 @@ export class UsersService {
   }
 
   private async hashPassword(password: string): Promise<string> {
-    return bcrypt.hash(password, 10);
+    return hash(password, 10);
   }
 }

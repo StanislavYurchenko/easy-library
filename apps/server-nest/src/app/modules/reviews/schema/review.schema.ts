@@ -8,24 +8,33 @@ import { IReview } from '../interface/review.interface';
 @Schema({
   ...defaultSchemaOptions,
 })
-class Review implements Required<IReview> {
+export class Review implements Required<IReview> {
+  constructor({ id, author, comment, book, likes, dislikes }: IReview) {
+    this.id = id;
+    this.author = author;
+    this.comment = comment;
+    this.book = book;
+    this.likes = likes || [];
+    this.dislikes = dislikes || [];
+  }
+
   @Transform(({ value }) => value.toString())
-  id!: string;
+  readonly id!: string;
 
   @Prop({ type: Types.ObjectId, ref: TableName.User, required: true, autopopulate: true })
-  author!: string;
+  readonly author!: string;
 
   @Prop({ type: String, trim: true, required: true })
-  comment!: string;
+  readonly comment!: string;
 
   @Prop({ type: Types.ObjectId, ref: TableName.Book, required: true, autopopulate: true })
-  book!: string;
+  readonly book!: string;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }], autopopulate: true })
-  likes!: string[];
+  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }], autopopulate: true, default: [] })
+  readonly likes!: string[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }], autopopulate: true })
-  dislikes!: string[];
+  @Prop({ type: [{ type: Types.ObjectId, ref: TableName.User }], autopopulate: true, default: [] })
+  readonly dislikes!: string[];
 }
 
 export type ReviewDocument = HydratedDocument<Review>;
