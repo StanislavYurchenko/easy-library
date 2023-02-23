@@ -21,7 +21,7 @@ export class Review implements Required<IReview> {
   @Transform(({ value }) => value.toString())
   readonly id!: string;
 
-  @Prop({ type: Types.ObjectId, ref: TableName.User, required: true, autopopulate: true })
+  @Prop({ type: Types.ObjectId, ref: TableName.User, required: true, autopopulate: false })
   readonly author!: string;
 
   @Prop({ type: String, trim: true, required: true })
