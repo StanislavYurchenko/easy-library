@@ -54,7 +54,7 @@ export class ReviewsController {
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
   @UseGuards(AbilitiesGuard)
-  @CheckAbilities(readReviewAbility)
+  @CheckAbilities(updateReviewAbility)
   @Put(`/${ReviewEndpoints.updateReviewUserIdList}/:id`)
   async updateReviewUserIdList(
     @Res() response: Response<ApiRes<IReview>>,

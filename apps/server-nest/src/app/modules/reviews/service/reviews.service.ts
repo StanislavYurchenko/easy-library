@@ -26,11 +26,13 @@ export class ReviewsService {
 
   async updateReview(reviewId: string, updateReviewDto: UpdateReviewDto, currentUser: IUser): Promise<IReview> {
     const ability = this.abilityFactory.defineAbility(currentUser);
-    const reviewToUpdate = new Review(await this.getReview(reviewId));
+    const reviewToUpdate = new Review(await this.getReviewNotPopulated(reviewId));
 
     ForbiddenError.from(ability).setMessage('It is forbidden for you').throwUnlessCan(Actions.Update, reviewToUpdate);
 
-    const existingReview = await this.reviewModel.findByIdAndUpdate(reviewId, updateReviewDto, { new: true });
+    const existingReview = await this.reviewModel
+      .findByIdAndUpdate(reviewId, updateReviewDto, { new: true })
+      .populate({ path: 'author' });
 
     if (!existingReview) {
       throw new NotFoundException(`Review #${reviewId} not found`);
@@ -40,7 +42,7 @@ export class ReviewsService {
   }
 
   async getAllReviews(): Promise<IReview[]> {
-    const reviewData = await this.reviewModel.find();
+    const reviewData = await this.reviewModel.find().populate({ path: 'author' });
 
     if (!reviewData || reviewData.length === 0) {
       throw new NotFoundException('Reviews data not found!');
@@ -50,6 +52,16 @@ export class ReviewsService {
   }
 
   async getReview(reviewId: string): Promise<IReview> {
+    const existingReview = await this.reviewModel.findById(reviewId).populate({ path: 'author' });
+
+    if (!existingReview) {
+      throw new NotFoundException(`Review #${reviewId} not found`);
+    }
+
+    return existingReview.toObject();
+  }
+
+  async getReviewNotPopulated(reviewId: string): Promise<IReview> {
     const existingReview = await this.reviewModel.findById(reviewId);
 
     if (!existingReview) {
@@ -60,7 +72,7 @@ export class ReviewsService {
   }
 
   async deleteReview(reviewId: string): Promise<IReview> {
-    const deletedReview = await this.reviewModel.findByIdAndDelete(reviewId);
+    const deletedReview = await this.reviewModel.findByIdAndDelete(reviewId).populate({ path: 'author' });
 
     if (!deletedReview) {
       throw new NotFoundException(`Review #${reviewId} not found`);
@@ -76,19 +88,15 @@ export class ReviewsService {
     let review;
 
     if (action === ReviewAction.add) {
-      review = await this.reviewModel.findByIdAndUpdate(
-        reviewId,
-        { $addToSet: { [`${property}`]: userId } },
-        { new: true },
-      );
+      review = await this.reviewModel
+        .findByIdAndUpdate(reviewId, { $addToSet: { [`${property}`]: userId } }, { new: true })
+        .populate({ path: 'author' });
     }
 
     if (action === ReviewAction.remove) {
-      review = await this.reviewModel.findByIdAndUpdate(
-        reviewId,
-        { $pull: { [`${property}`]: userId } },
-        { new: true },
-      );
+      review = await this.reviewModel
+        .findByIdAndUpdate(reviewId, { $pull: { [`${property}`]: userId } }, { new: true })
+        .populate({ path: 'author' });
     }
 
     if (!review) {
