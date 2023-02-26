@@ -14,7 +14,7 @@ export class AppResolver implements Resolve<KebabInterface> {
       meat: 'cow',
       salad: 'rukkola',
     }).pipe(
-      delay(4000),
+      delay(1000),
       catchError(() => {
         this.route.navigate(['']);
         return EMPTY;

@@ -1,8 +1,7 @@
 import { Route } from '@angular/router';
 import {AppComponent} from "./app.component";
-import {KebabComponent} from "./components/kebab/kebab.component";
-import {StreamsComponent} from "./components/streams/streams.component";
 import {AppResolver} from "./shared";
+import {KebabComponent, RegistrationFormComponent, StreamsComponent, ValueAccessorComponent} from "./components";
 
 export const appRoutes: Route[] = [
   {
@@ -20,5 +19,13 @@ export const appRoutes: Route[] = [
   {
     path: 'streams',
     component: StreamsComponent,
+  },
+  {
+    path: 'valueAccessor',
+    component: ValueAccessorComponent,
+  },
+  {
+    path: 'registration',
+    component: RegistrationFormComponent,
   }
 ];

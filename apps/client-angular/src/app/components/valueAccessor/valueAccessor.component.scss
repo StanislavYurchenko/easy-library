@@ -1,0 +1,32 @@
+:host {
+  display: block;
+}
+.form {
+  background-color: #fafafa;
+  padding: 1rem;
+  border: #ccc solid 1px;
+  border-radius: 5px;
+}
+.form-field {
+  margin-right: 1rem;
+}
+
+//:host {
+//  width: 100%;
+//  max-width: 800px;
+//  height: 100%;
+//  display: block;
+//  margin: 32px auto;
+//}
+//
+//.form {
+//  width: 100%;
+//  height: 100%;
+//  display: flex;
+//  flex-direction: column;
+//  color: gray;
+//
+//  > * {
+//    margin: 6px 0px;
+//  }
+//}

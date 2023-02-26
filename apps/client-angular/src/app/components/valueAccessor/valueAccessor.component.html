@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<form [formGroup]="form" class="form">
+  <mat-form-field class="form-field">
+    <input
+      matInput
+      formControlName="itemName"
+      name="no-name"
+      placeholder="Add item"
+    />
+  </mat-form-field>
+  <button style="margin-top: 1rem;" mat-stroked-button (click)="onSubmit()">
+    Add item
+  </button>
+  <easy-library-lock-input [formControlName]="'isLocked'"></easy-library-lock-input>
+</form>
+
+<form [formGroup]="form2" class="form">
+<!--  <app-title-input-->
+<!--    ngDefaultControl-->
+<!--    [formControlName]="'title'">-->
+<!--  </app-title-input>-->
+
+  <app-author-input
+    ngDefaultControl
+    [formControlName]="'author'">
+  </app-author-input>
+
+  <app-content-input
+    ngDefaultControl
+    [formControlName]="'content'">
+  </app-content-input>
+</form>
+
+{{ form.value | json }}

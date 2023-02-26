@@ -43,5 +43,5 @@
   {{ (concatLatest$ | async) | async | json }}
 </p>
 <p>
-  <button (click)="buffers$.next()">buffer</button>
+  <button (click)="buffer$.next()">buffer</button>
 </p>

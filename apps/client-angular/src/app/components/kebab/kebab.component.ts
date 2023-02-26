@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import {
   catchError,
+  EMPTY,
   forkJoin,
   interval,
   map,
@@ -70,9 +71,9 @@ export class KebabComponent implements OnInit {
         }
         return value;
       }),
-      // @ts-ignore
       catchError(error => {
         console.error('Error:', error);
+        return EMPTY;
       }),
       retry(3),
     );

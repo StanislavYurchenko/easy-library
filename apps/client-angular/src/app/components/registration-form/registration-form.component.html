@@ -1,10 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div class="registration-page-wrapper">
+  <form class="registration-form" autocomplete="off"
+        *ngIf="registrationFrom"
+        [formGroup]="registrationFrom"
+        (ngSubmit)="submitRegistrationForm()">
+
+    <h1>
+      Register:
+    </h1>
+    <easy-library-input [parenForm]="registrationFrom" fieldName="name" label="Name" formControlName="name"></easy-library-input>
+    <easy-library-input [parenForm]="registrationFrom" fieldName="email" label="Email" formControlName="email"></easy-library-input>
+    <easy-library-password-input [parenForm]="registrationFrom" fieldName="password" label="Password" formControlName="password"></easy-library-password-input>
+
+
+
+    <div class="form-row">
+      <label class="form-label" for="favouriteHexCode">
+				<span>
+					Favourite hex colour
+				</span>
+      </label>
+
+      <div class="input-with-button-wrapper">
+        <input class="form-element" type="text" name="favouriteHexCode" id="favouriteHexCode" maxlength="7"
+               formControlName="favouriteHexCode">
+
+        <div class="hex-colour-display"
+             [ngStyle]="{
+						background: favouriteHexCodeValue !== ''
+							? favouriteHexCodeValue
+							: 'transparent'
+					}">
+        </div>
+      </div>
+    </div>
+
+    <easy-library-lock-input [formControlName]="'isLocked'"></easy-library-lock-input>
+    <div class="button-row">
+      <button class="button-success" type="submit"
+              [disabled]="registrationFrom?.invalid">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
