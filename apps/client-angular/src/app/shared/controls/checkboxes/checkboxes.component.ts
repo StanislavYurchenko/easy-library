@@ -1,75 +1,68 @@
 import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-
-import { ControlItem, Value } from '@app/models/frontend';
-export { ControlItem, Value } from '@app/models/frontend';
+// eslint-disable-next-line import/no-unresolved
+import { ControlItem, Value } from '@client-angular/models';
 
 @Component({
-    selector: 'app-checkboxes',
-    templateUrl: './checkboxes.component.html',
-    styleUrls: ['./checkboxes.component.scss'],
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => CheckboxesComponent),
-            multi: true
-        }
-    ]
+  selector: 'easy-library-checkboxes',
+   templateUrl: './checkboxes.component.html',
+   styleUrls: ['./checkboxes.component.scss'],
+  providers: [
+    {
+         provide: NG_VALUE_ACCESSOR,
+         useExisting: forwardRef(() => CheckboxesComponent),
+      multi: true,
+    },
+  ]
 })
-export class CheckboxesComponent implements OnInit, ControlValueAccessor {
-    @Input() items: ControlItem[];
-    @Output() changed = new EventEmitter<Value[]>();
+export class CheckboxesComponent implements ControlValueAccessor {
+  @Input() items: ControlItem[] = [];
+  @Output() changed = new EventEmitter<Value[]>();
 
-    value: Value[];
-    isDisabled: boolean;
+  value: Value[] = [];
+  isDisabled = false;
 
-    constructor() { }
+  private propagateChange: (fn: any) => void = (fn: any) => {};
 
-    ngOnInit(): void {
-    }
+  writeValue(value: Value[]): void {
+     this.value = value;
+  }
 
-    private propagateChange: any = () => { };
+  registerOnChange(fn: any): void {
+    this.propagateChange = fn;
+  }
 
-    writeValue(value: Value[]): void {
-        this.value = value;
-    }
+  registerOnTouched(fn: any): void {}
 
-    registerOnChange(fn: any): void {
-        this.propagateChange = fn;
-    }
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled = isDisabled;
+  }
 
-    registerOnTouched(fn: any): void {
-    }
+  onChanged(value: Value, checked: boolean): void {
+     const selected = this.getSelected(value, checked);
 
-    setDisabledState(isDisabled: boolean): void {
-        this.isDisabled = isDisabled;
-    }
+     this.value = selected;
+    this.propagateChange(selected);
+     this.changed.emit(selected);
+  }
 
-    onChanged(value: Value, checked: boolean): void {
-        const selected = this.getSelected(value, checked);
+  private getSelected(value: Value, checked: boolean): Value[] {
+     const selected: Value[] = this.value ? [...this.value] : [];
 
-        this.value = selected;
-        this.propagateChange(selected);
-        this.changed.emit(selected);
-    }
-
-    private getSelected(value: Value, checked: boolean): Value[] {
-        const selected: Value[] = this.value ? [...this.value] : [];
-
-        if (checked) {
-            if (!selected.includes(value)) {
-                selected.push(value);
-            }
-        } else {
-            const index = selected.indexOf(value);
-            selected.splice(index, 1);
+     if (checked) {
+        if (!selected.includes(value)) {
+           selected.push(value);
         }
+     } else {
+        const index = selected.indexOf(value);
 
-        return selected.length ? selected : null;
+        selected.splice(index, 1);
     }
 
-    isChecked(value: Value): boolean {
-        return this.value && this.value.includes(value);
-    }
+     return selected.length ? selected : [];
+  }
 
+  isChecked(value: Value): boolean {
+     return this.value && this.value.includes(value);
+  }
 }

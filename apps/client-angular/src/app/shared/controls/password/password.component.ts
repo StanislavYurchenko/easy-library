@@ -4,7 +4,7 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 type PasswordType = 'password' | 'text';
 
 @Component({
-    selector: 'app-password',
+    selector: 'easy-library-password',
     templateUrl: './password.component.html',
     styleUrls: ['./password.component.scss'],
     providers: [
@@ -15,25 +15,22 @@ type PasswordType = 'password' | 'text';
         }
     ]
 })
-export class PasswordComponent implements OnInit, ControlValueAccessor {
+export class PasswordComponent implements ControlValueAccessor {
 
-    @Input() placeholder: string;
+    @Input() placeholder: string = '';
 
     @Output() changed = new EventEmitter<string>();
 
-    value: string;
-    isDisabled: boolean;
+    value = '';
+    isDisabled = false;
     passwordType: PasswordType;
 
     constructor() {
         this.passwordType = 'password';
     }
 
-    ngOnInit(): void {
-    }
-
-    private propagateChange: any = () => { };
-    private propagateTouched: any = () => { };
+    private propagateChange: (fn: any) => void = (fn: any) => {};
+    private propagateTouched: () => void = () => {};
 
     writeValue(value: string): void {
         this.value = value;
@@ -51,10 +48,10 @@ export class PasswordComponent implements OnInit, ControlValueAccessor {
         this.isDisabled = isDisabled;
     }
 
-    onKeyup(value: string): void {
-        this.value = value;
-        this.propagateChange(value);
-        this.changed.emit(value);
+    onKeyup(evt: Event): void {
+        this.value = (<HTMLInputElement>evt.target).value;
+        this.propagateChange(this.value);
+        this.changed.emit(this.value);
     }
 
     onBlur(): void {

@@ -14,40 +14,12 @@
 
     <easy-library-form-field label="Input" [required]="true" [control]="input" [isInline]="isInline"
                     [patternError]="regexErrors.numbers">
-      <app-input formControlName="input"></app-input>
+      <easy_library-input formControlName="input"></easy_library-input>
     </easy-library-form-field>
 
-<!--    <easy-library-form-field label="Password" [required]="true" [control]="form.controls.password" [isInline]="isInline">-->
-<!--      <app-password formControlName="password"></app-password>-->
-<!--    </easy-library-form-field>-->
-
-<!--    <easy-library-form-field label="Autocomplete" [required]="true" [control]="form.controls.autocomplete"-->
-<!--                    [isInline]="isInline">-->
-<!--      <app-autocomplete formControlName="autocomplete" [items]="items"></app-autocomplete>-->
-<!--    </easy-library-form-field>-->
-
-<!--    <easy-library-form-field label="Select" [required]="true" [control]="form.controls.select" [isInline]="isInline">-->
-<!--      <app-select formControlName="select" [items]="items"></app-select>-->
-<!--    </easy-library-form-field>-->
-
-<!--    <easy-library-form-field label="Checkboxes" [required]="true" [control]="form.controls.checkboxes" [isInline]="isInline">-->
-<!--      <app-checkboxes formControlName="checkboxes" [items]="items"></app-checkboxes>-->
-<!--    </easy-library-form-field>-->
-
-<!--    <easy-library-form-field label="Radios" [required]="true" [control]="form.controls.radios" [isInline]="isInline">-->
-<!--      <app-radios formControlName="radios" [items]="items">-->
-<!--      </app-radios>-->
-<!--    </easy-library-form-field>-->
-
-<!--    <easy-library-form-field label="Date" [required]="true" [control]="form.controls.date" [isInline]="isInline">-->
-<!--      <app-date formControlName="date" placeholder="Date">-->
-<!--      </app-date>-->
-<!--    </easy-library-form-field>-->
-
-<!--    <easy-library-form-field label="Date Range" [required]="true" [control]="form.controls.dateRange" [isInline]="isInline">-->
-<!--      <app-date-range formControlName="dateRange">-->
-<!--      </app-date-range>-->
-<!--    </easy-library-form-field>-->
+    <easy-library-form-field label="Password" [required]="true" [control]="form.controls.password" [isInline]="isInline">
+      <easy_library-password formControlName="password"></easy_library-password>
+    </easy-library-form-field>
 
   </form>
 </div>

@@ -22,7 +22,8 @@
     "paths": {
       "@libs/api-interface": ["libs/api-interface"],
       "@server-nest/configs": ["apps/server-nest/src/app/configs"],
-      "@server-nest/modules": ["apps/server-nest/src/app/modules"]
+      "@server-nest/modules": ["apps/server-nest/src/app/modules"],
+      "@client-angular/models": ["apps/client-angular/src/app/models"]
     },
     "strict": true
   },

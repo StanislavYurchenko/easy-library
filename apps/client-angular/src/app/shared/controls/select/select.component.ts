@@ -1,65 +1,57 @@
 import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-
+// eslint-disable-next-line import/no-unresolved
+import { ControlItem, Value } from '@client-angular/models';
 import { MatSelectChange } from '@angular/material/select';
 
-import { ControlItem, Value } from '@app/models/frontend';
-export { ControlItem, Value } from '@app/models/frontend';
-
 @Component({
-    selector: 'app-select',
-    templateUrl: './select.component.html',
-    styleUrls: ['./select.component.scss'],
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => SelectComponent),
-            multi: true
-        }
-    ]
+   selector: 'easy-library-select',
+  templateUrl: './select.component.html',
+   styleUrls: ['./select.component.scss'],
+  providers: [
+    {
+         provide: NG_VALUE_ACCESSOR,
+         useExisting: forwardRef(() => SelectComponent),
+      multi: true,
+      },
+  ]
 })
-export class SelectComponent implements OnInit, ControlValueAccessor {
-    @Input() items: ControlItem[];
-    @Input() placeholder: string;
-    @Output() changed = new EventEmitter<Value>();
+export class SelectComponent implements ControlValueAccessor {
+  @Input() items: ControlItem[] = [];
+  @Input() placeholder = '';
+  @Output() changed = new EventEmitter<Value>();
 
-    value: Value;
-    isDisabled: boolean;
+  value: Value | null = null;
+  isDisabled = false;
 
-    constructor() { }
+  private propagateChange: (fn: any) => void = (fn: any) => {};
+  private propagateTouched: () => void = () => {};
 
-    ngOnInit(): void {
-    }
+  writeValue(value: Value): void {
+     this.value = value;
+  }
 
-    private propagateChange: any = () => { };
-    private propagateTouched: any = () => { };
+  registerOnChange(fn: any): void {
+     this.propagateChange = fn;
+  }
 
-    writeValue(value: Value): void {
-        this.value = value;
-    }
+  registerOnTouched(fn: any): void {
+     this.propagateTouched = fn;
+  }
 
-    registerOnChange(fn: any): void {
-        this.propagateChange = fn;
-    }
+  setDisabledState(isDisabled: boolean): void {
+     this.isDisabled = isDisabled;
+  }
 
-    registerOnTouched(fn: any): void {
-        this.propagateTouched = fn;
-    }
+  onChanged(event: MatSelectChange): void {
+     const value = event.value ? event.value : null;
 
-    setDisabledState(isDisabled: boolean): void {
-        this.isDisabled = isDisabled;
-    }
+    this.value = value;
+     this.propagateChange(value);
+     this.changed.emit(value);
+  }
 
-    onChanged(event: MatSelectChange): void {
-        const value = event.value ? event.value : null;
-
-        this.value = value;
-        this.propagateChange(value);
-        this.changed.emit(value);
-    }
-
-    onBlur(): void {
-        this.propagateTouched();
-    }
-
+  onBlur(): void {
+     this.propagateTouched();
+  }
 }

@@ -2,85 +2,89 @@ import { Component, forwardRef, OnInit, Input, Output, EventEmitter } from '@ang
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormBuilder, FormGroup } from '@angular/forms';
 
 export interface Value {
-    from: number;
-    to: number;
+  from: number;
+  to: number;
 }
 
 export interface Placeholder {
-    from: string;
-    to: string;
+  from: string;
+  to: string;
 }
 
 @Component({
-    selector: 'app-date-range',
-    templateUrl: './date-range.component.html',
-    styleUrls: ['./date-range.component.scss'],
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => DateRangeComponent),
-            multi: true
-        }
-    ]
+   selector: 'easy-library-date-range',
+   templateUrl: './date-range.component.html',
+  styleUrls: ['./date-range.component.scss'],
+  providers: [
+    {
+         provide: NG_VALUE_ACCESSOR,
+         useExisting: forwardRef(() => DateRangeComponent),
+      multi: true,
+    },
+  ]
 })
 export class DateRangeComponent implements OnInit, ControlValueAccessor {
+  @Input() placeholder = '';
+  @Output() changed = new EventEmitter<Value>();
 
-    @Input() placeholder: Placeholder;
-    @Output() changed = new EventEmitter<Value>();
+  form!: FormGroup;
 
-    form: FormGroup;
+  constructor(private fb: FormBuilder) {}
 
-    constructor(private fb: FormBuilder) { }
+  ngOnInit(): void {
+     this.form = this.fb.group({
+        from: [null],
+        to: [null]
+    });
+  }
 
-    ngOnInit(): void {
-        this.form = this.fb.group({
-            from: [null],
-            to: [null],
-        });
-    }
+  get from(): any {
+    return this.form?.get('from');
+  }
 
-    get min(): Date {
-        const from = this.form.controls.from.value;
-        return from ? new Date(from) : null;
-    }
+  get to(): any {
+    return this.form?.get('to');
+  }
 
-    get max(): Date {
-        const to = this.form.controls.to.value;
-        return to ? new Date(to) : null;
-    }
+  get min(): Date {
+     return new Date(this.from.value);
+  }
 
-    private propagateChange: any = () => { };
-    private propagateTouched: any = () => { };
+  get max(): Date {
+     return new Date(this.to.value);
+  }
 
-    writeValue(value: Value): void {
-        this.form.patchValue(value || {});
-    }
+  private propagateChange: (fn: any) => void = (fn: any) => {};
+  private propagateTouched: () => void = () => {};
 
-    registerOnChange(fn: any): void {
-        this.propagateChange = fn;
-    }
+  writeValue(value: Value): void {
+     this.form.patchValue(value || {});
+  }
 
-    registerOnTouched(fn: any): void {
-        this.propagateTouched = fn;
-    }
+  registerOnChange(fn: any): void {
+     this.propagateChange = fn;
+  }
 
-    setDisabledState(isDisabled: boolean): void {
-        if (isDisabled) {
-            this.form.disable();
-        } else {
-            this.form.enable();
-        }
-    }
+  registerOnTouched(fn: any): void {
+     this.propagateTouched = fn;
+  }
 
-    onChanged(): void {
-        const value = { ...this.form.value };
+  setDisabledState(isDisabled: boolean): void {
+     if (isDisabled) {
+        this.form.disable();
+     } else {
+        this.form.enable();
+     }
+  }
 
-        this.propagateChange(value);
-        this.changed.emit(value);
-    }
+  onChanged(): void {
+     const value = { ...this.form.value };
 
-    onClosed(): void {
-        this.propagateTouched();
-    }
+    this.propagateChange(value);
+     this.changed.emit(value);
+  }
 
+  onClosed(): void {
+     this.propagateTouched();
+  }
 }

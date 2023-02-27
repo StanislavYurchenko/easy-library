@@ -1,12 +1,11 @@
-import { Component, forwardRef, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, forwardRef, Input, Output, EventEmitter } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 type Value = number;
 
 @Component({
-    selector: 'app-date',
+    selector: 'easy-library-date',
     templateUrl: './date.component.html',
     styleUrls: ['./date.component.scss'],
     providers: [
@@ -17,31 +16,26 @@ type Value = number;
         }
     ]
 })
-export class DateComponent implements OnInit, ControlValueAccessor {
+export class DateComponent implements ControlValueAccessor {
 
-    @Input() placeholder: string;
+    @Input() placeholder = '';
 
-    @Input() min: Date;
+    @Input() min: Date | undefined;
 
-    @Input() max: Date;
+    @Input() max: Date | undefined;
 
-    @Output() changed = new EventEmitter<Value>();
+    @Output() changed = new EventEmitter<Value | null>();
     @Output() closed = new EventEmitter<void>();
 
-    value: Value;
-    isDisabled: boolean;
+    value: Value | null = null;
+    isDisabled = false;
 
-    constructor() { }
-
-    ngOnInit(): void {
-    }
-
-    get inputValue(): Date {
+    get inputValue(): Date | null {
         return this.value ? new Date(this.value) : null;
     }
 
-    private propagateChange: any = () => { };
-    private propagateTouched: any = () => { };
+  private propagateChange: (fn: any) => void = (fn: any) => {};
+  private propagateTouched: () => void = () => {};
 
     writeValue(value: Value): void {
         this.value = value;

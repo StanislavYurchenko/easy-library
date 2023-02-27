@@ -1,60 +1,51 @@
 import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-
-import { ControlItem, Value } from '@app/models/frontend';
-export { ControlItem, Value } from '@app/models/frontend';
+// eslint-disable-next-line import/no-unresolved
+import { ControlItem, Value } from '@client-angular/models';
 
 @Component({
-    selector: 'app-radios',
-    templateUrl: './radios.component.html',
-    styleUrls: ['./radios.component.scss'],
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => RadiosComponent),
-            multi: true
-        }
-    ]
+   selector: 'easy-library-radios',
+  templateUrl: './radios.component.html',
+   styleUrls: ['./radios.component.scss'],
+  providers: [
+      {
+         provide: NG_VALUE_ACCESSOR,
+         useExisting: forwardRef(() => RadiosComponent),
+      multi: true,
+      },
+  ]
 })
-export class RadiosComponent implements OnInit, ControlValueAccessor {
+export class RadiosComponent implements ControlValueAccessor {
+  @Input() items: ControlItem[] = [];
 
-    @Input() items: ControlItem[];
+  @Output() changed = new EventEmitter<Value>();
 
-    @Output() changed = new EventEmitter<Value>();
+  value: Value | null = null;
+  isDisabled = false;
 
-    value: Value;
-    isDisabled: boolean;
+  private propagateChange: (fn: any) => void = (fn: any) => {};
 
-    constructor() { }
+  writeValue(value: Value): void {
+     this.value = value;
+  }
 
-    ngOnInit(): void {
-    }
+  registerOnChange(fn: any): void {
+     this.propagateChange = fn;
+  }
 
-    private propagateChange: any = () => { };
+  registerOnTouched(fn: any): void {}
 
-    writeValue(value: Value): void {
-        this.value = value;
-    }
+  setDisabledState(isDisabled: boolean): void {
+     this.isDisabled = isDisabled;
+  }
 
-    registerOnChange(fn: any): void {
-        this.propagateChange = fn;
-    }
+  onChanged(value: Value): void {
+     this.value = value;
+     this.propagateChange(value);
+     this.changed.emit(value);
+  }
 
-    registerOnTouched(fn: any): void {
-    }
-
-    setDisabledState(isDisabled: boolean): void {
-        this.isDisabled = isDisabled;
-    }
-
-    onChanged(value: Value): void {
-        this.value = value;
-        this.propagateChange(value);
-        this.changed.emit(value);
-    }
-
-    isChecked(value: Value): boolean {
-        return this.value === value;
-    }
-
+  isChecked(value: Value): boolean {
+    return this.value === value;
+  }
 }

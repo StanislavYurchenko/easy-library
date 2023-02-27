@@ -1,96 +1,90 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormControl } from '@angular/forms';
-
 import { Subject, Observable } from 'rxjs';
 import { takeUntil, distinctUntilChanged, startWith, map, filter } from 'rxjs/operators';
-
-import { ControlItem, Value } from '@app/models/frontend';
-export { ControlItem, Value } from '@app/models/frontend';
+// eslint-disable-next-line import/no-unresolved
+import { ControlItem, Value } from '@client-angular/models';
 
 @Component({
-    selector: 'app-autocomplete',
-    templateUrl: './autocomplete.component.html',
-    styleUrls: ['./autocomplete.component.scss'],
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => AutocompleteComponent),
-            multi: true
-        }
-    ]
+  selector: 'easy-library-autocomplete',
+   templateUrl: './autocomplete.component.html',
+  styleUrls: ['./autocomplete.component.scss'],
+   providers: [
+    {
+         provide: NG_VALUE_ACCESSOR,
+         useExisting: forwardRef(() => AutocompleteComponent),
+      multi: true,
+      },
+  ],
 })
 export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAccessor {
+  @Input() items: ControlItem[] = [];
+  @Input() placeholder = '';
 
-    @Input() items: ControlItem[];
-    @Input() placeholder: string;
+  @Output() changed = new EventEmitter<Value>();
 
-    @Output() changed = new EventEmitter<Value>();
+  formControl = new FormControl();
+  options$: Observable<ControlItem[]> | null = null;
 
-    formControl = new FormControl();
-    options$: Observable<ControlItem[]>;
+  private destroy = new Subject<void>();
 
-    private destroy = new Subject<any>();
+  ngOnInit(): void {
+     this.options$ = this.formControl.valueChanges.pipe(
+        startWith(''),
+        filter(value => typeof value === 'string' || typeof value === 'object'),
+        map(value => (typeof value === 'string' ? value : value.label)),
+        map(label => (label ? this.filter(label) : this.items.slice()))
+    );
 
-    constructor() { }
+     this.formControl.valueChanges.pipe(takeUntil(this.destroy), distinctUntilChanged()).subscribe((item) => {
+        const value = typeof item === 'object' ? item.value : null;
 
-    ngOnInit(): void {
-        this.options$ = this.formControl.valueChanges.pipe(
-            startWith(''),
-            filter(value => typeof value === 'string' || typeof value === 'object'),
-            map(value => typeof value === 'string' ? value : value.label),
-            map(label => label ? this.filter(label) : this.items.slice())
-        );
+        this.propagateChange(value);
+      this.changed.emit(value);
+     });
+  }
 
-        this.formControl.valueChanges.pipe(
-            takeUntil(this.destroy),
-            distinctUntilChanged()
-        ).subscribe(item => {
-            const value = typeof item === 'object' ? item.value : null;
-            this.propagateChange(value);
-            this.changed.emit(value);
-        });
-    }
+  ngOnDestroy(): void {
+     this.destroy.next();
+     this.destroy.complete();
+  }
 
-    ngOnDestroy(): void {
-        this.destroy.next();
-        this.destroy.complete();
-    }
+  private filter(value: string): ControlItem[] {
+    const filterValue = value.toLowerCase();
 
-    private filter(value: string): ControlItem[] {
-        const filterValue = value.toLowerCase();
-        return this.items.filter(item => item.label.toLowerCase().includes(filterValue));
-    }
+     return this.items.filter(item => item.label.toLowerCase().includes(filterValue));
+  }
 
-    private propagateChange: any = () => { };
-    private propagateTouched: any = () => { };
+  private propagateChange: (fn: any) => void = (fn: any) => {};
+  private propagateTouched: () => void = () => {};
 
-    writeValue(value: Value): void {
-        const selectedOption = this.items.find(item => item.value === value);
-        this.formControl.setValue(selectedOption);
-    }
+  writeValue(value: Value): void {
+     const selectedOption = this.items.find(item => item.value === value);
 
-    registerOnChange(fn: any): void {
-        this.propagateChange = fn;
-    }
+     this.formControl.setValue(selectedOption);
+  }
 
-    registerOnTouched(fn: any): void {
-        this.propagateTouched = fn;
-    }
+  registerOnChange(fn: any): void {
+     this.propagateChange = fn;
+  }
 
-    setDisabledState(isDisabled: boolean): void {
-        if (isDisabled) {
-            this.formControl.disable();
-        } else {
-            this.formControl.enable();
-        }
-    }
+  registerOnTouched(fn: any): void {
+     this.propagateTouched = fn;
+  }
 
-    displayFn(item?: ControlItem): string | undefined {
-        return item ? item.label : undefined;
-    }
+  setDisabledState(isDisabled: boolean): void {
+     if (isDisabled) {
+      this.formControl.disable();
+     } else {
+        this.formControl.enable();
+     }
+  }
 
-    onBlur(): void {
-        this.propagateTouched();
-    }
+  displayFn(item?: ControlItem): string | undefined {
+    return item ? item.label : undefined;
+  }
 
+  onBlur(): void {
+    this.propagateTouched();
+  }
 }
