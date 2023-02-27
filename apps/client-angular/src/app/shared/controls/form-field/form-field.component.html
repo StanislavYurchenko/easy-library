@@ -19,8 +19,7 @@
           characters</span>
         <span *ngSwitchCase="'pattern'">
           <span *ngIf="control.errors">
-                                <span *ngIf="patternError">{{patternError}}</span>
-                    <span *ngIf="!patternError">Pattern does not match</span>
+                 <span>{{patternError ? patternError: 'Pattern does not match'}}</span>
           </span>
 
                 </span>

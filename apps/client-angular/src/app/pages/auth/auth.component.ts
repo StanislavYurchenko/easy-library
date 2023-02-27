@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { regex, regexErrors } from '../../shared/utils/regex';
 import { NotificationService } from '../../services/notification/notification.service';
 import { markFormGroupTouched } from '../../shared';
@@ -21,27 +21,17 @@ export interface ControlItem {
 })
 export class AuthComponent {
   form!: FormGroup;
-  isInline: boolean;
   regexErrors = regexErrors;
 
-  items: ControlItem[];
-
-  showSpinner = false;
-
-  get input(): any {
+  get input(): AbstractControl<any, any> | null {
     return this.form?.get('input');
   }
 
-  constructor(private fb: FormBuilder, private notification: NotificationService) {
-    this.isInline = true;
+  get password(): AbstractControl<any, any> | null {
+    return this.form?.get('password');
+  }
 
-    this.items = [
-      { label: 'First', value: 1 },
-      { label: 'Second', value: 2 },
-      { label: 'Third', value: 3 },
-      { label: 'Fourth', value: 4 },
-      { label: 'Fifth', value: 5 }
-    ];
+  constructor(private fb: FormBuilder, private notification: NotificationService) {
   }
 
   ngOnInit(): void {
@@ -50,14 +40,14 @@ export class AuthComponent {
             null,
             {
                updateOn: 'blur',
-               validators: [Validators.required, Validators.minLength(3), Validators.pattern(regex.numbers)]
+               validators: [Validators.required, Validators.minLength(3), Validators.pattern(regex.email)]
         }
       ],
       password: [
             null,
             {
                updateOn: 'blur',
-               validators: [Validators.required]
+               validators: [Validators.required, Validators.pattern(regex.password)]
         },
       ],
     });
@@ -75,20 +65,7 @@ export class AuthComponent {
     this.form.patchValue({
       input: 123,
       password: 'qwerty',
-      autocomplete: 1,
-      select: 2,
-      checkboxes: [3],
-      radios: 4,
-      date: new Date().getTime(),
-      dateRange: {
-        from: new Date(2019, 5, 10).getTime(),
-        to: new Date(2019, 5, 25).getTime()
-      }
       });
-  }
-
-  onToggleInline(): void {
-    this.isInline = !this.isInline;
   }
 
   onToggleDisable(): void {
@@ -97,10 +74,6 @@ export class AuthComponent {
     } else {
       this.form.enable();
     }
-  }
-
-  onToggleSpinner(): void {
-    this.showSpinner = !this.showSpinner;
   }
 
   onSuccess(): void {

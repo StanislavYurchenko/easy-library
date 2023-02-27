@@ -2,24 +2,19 @@
 
 <div class="wrapper">
 
-<!--  <app-spinner *ngIf="showSpinner"></app-spinner>-->
+  <form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
 
-  <form [formGroup]="form" novalidate autocomplete="off" (ngSubmit)="onSubmit()">
 
-    <app-button type="submit">Submit</app-button>
-    <app-button (click)="onPatchValue()">Patch Value</app-button>
-    <app-button (click)="onToggleInline()">Toggle Inline</app-button>
-    <app-button (click)="onToggleDisable()">Toggle Disable</app-button>
+    <easy-library-form-field label="Input" [required]="true" [control]="input" [patternError]="regexErrors.email">
+      <easy-library-input formControlName="input"></easy-library-input>
+    </easy-library-form-field>
+
+    <easy-library-form-field label="Password" [required]="true" [control]="password" [patternError]="regexErrors.password">
+      <easy-library-password formControlName="password"></easy-library-password>
+    </easy-library-form-field>
+
     <br /><br /><br />
-
-    <easy-library-form-field label="Input" [required]="true" [control]="input" [isInline]="isInline"
-                    [patternError]="regexErrors.numbers">
-      <easy_library-input formControlName="input"></easy_library-input>
-    </easy-library-form-field>
-
-    <easy-library-form-field label="Password" [required]="true" [control]="form.controls.password" [isInline]="isInline">
-      <easy_library-password formControlName="password"></easy_library-password>
-    </easy-library-form-field>
+    <app-button type="submit">Submit</app-button>
 
   </form>
 </div>

@@ -17,7 +17,7 @@ export class InputComponent implements ControlValueAccessor {
   @Input() placeholder = '';
   @Output() changed = new EventEmitter<string>();
   value = '';
-  isDisabled: boolean | null = null;
+  isDisabled = false;
 
   private propagateChange: (fn: any) => void = (fn: any) => {};
   private propagateTouched: () => void = () => {};
