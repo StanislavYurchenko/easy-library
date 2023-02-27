@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import {ApiRes, Book} from "@libs/api-interface";
 
 @Component({
   selector: 'easy-library-root',
@@ -8,11 +9,16 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'client-angular';
-  dataFromServer = '';
+  dataFromServer: any = null;
+  books: Book[] = [];
+
 
   constructor(private readonly http: HttpClient) {}
 
   getData() {
-    this.http.get<{ message: string }>('/api/books').subscribe(({ message }) => (this.dataFromServer = message));
+    this.http.get<ApiRes<Book[]>>('/api/books').subscribe((res: ApiRes<Book[]>) => {
+      this.dataFromServer = res.message;
+      this.books = res.data ?? [];
+  });
   }
 }

@@ -4,22 +4,25 @@ import { NotificationComponent } from './components';
 
 @Injectable()
 export class NotificationService {
+   constructor(private snackBar: MatSnackBar) {}
 
-    constructor(private snackBar: MatSnackBar) { }
+   error(message: string): void {
+    this.snackBar.openFromComponent(NotificationComponent, {
+         duration: 3000,
+         data: { message },
+         panelClass: ['mat-snackbar_error'],
+         verticalPosition: 'top',
+         horizontalPosition: 'center',
+      });
+  }
 
-    error(message: string): void {
-        this.snackBar.openFromComponent(NotificationComponent, {
-            duration: 3000,
-            data: { message },
-            panelClass: ['mat-snackbar_error']
-        });
-    }
-
-    success(message: string): void {
-        this.snackBar.openFromComponent(NotificationComponent, {
-            duration: 3000,
-            data: { message },
-            panelClass: ['mat-snackbar_success']
-        });
-    }
+   success(message: string): void {
+      this.snackBar.openFromComponent(NotificationComponent, {
+         duration: 3000,
+         data: { message },
+         panelClass: ['mat-snackbar_success'],
+         verticalPosition: 'top',
+         horizontalPosition: 'center',
+      });
+   }
 }

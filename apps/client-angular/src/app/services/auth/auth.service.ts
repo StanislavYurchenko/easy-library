@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { TokenService } from '../token/token.service';
 
 @Injectable({
@@ -10,17 +11,18 @@ export class AuthService {
   private authenticatedSubject = new BehaviorSubject<boolean>(false);
   public authenticated$ = this.authenticatedSubject.asObservable();
 
-  constructor(private http: HttpClient, private tokenService: TokenService) {}
+  constructor(private http: HttpClient, private tokenService: TokenService, private route: Router) {}
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post<any>('https://api.example.com/authenticate', { username, password }).pipe(
+  login(email: string, password: string): Observable<any> {
+    return this.http.post<any>('/api/auth/login', { email, password }).pipe(
          tap((response) => {
             const token = response.access_token;
 
             this.tokenService.setToken(token);
             this.authenticatedSubject.next(true);
+            void this.route.navigate(['']);
          })
-    );
+      );
   }
 
   logout(): void {

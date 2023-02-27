@@ -2,11 +2,11 @@
 
 <div class="wrapper">
 
-  <form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
+  <form [formGroup]="form" novalidate (ngSubmit)="signIn()">
 
 
-    <easy-library-form-field label="Input" [required]="true" [control]="input" [patternError]="regexErrors.email">
-      <easy-library-input formControlName="input"></easy-library-input>
+    <easy-library-form-field label="Email" [required]="true" [control]="email" [patternError]="regexErrors.email">
+      <easy-library-input formControlName="email"></easy-library-input>
     </easy-library-form-field>
 
     <easy-library-form-field label="Password" [required]="true" [control]="password" [patternError]="regexErrors.password">
@@ -14,7 +14,7 @@
     </easy-library-form-field>
 
     <br /><br /><br />
-    <app-button type="submit">Submit</app-button>
+    <app-button type="submit">Sign In</app-button>
 
   </form>
 </div>
