@@ -13,6 +13,6 @@ export class AppComponent {
   constructor(private readonly http: HttpClient) {}
 
   getData() {
-    this.http.get<{ message: string }>('/api').subscribe(({ message }) => (this.dataFromServer = message));
+    this.http.get<{ message: string }>('/api/books').subscribe(({ message }) => (this.dataFromServer = message));
   }
 }
