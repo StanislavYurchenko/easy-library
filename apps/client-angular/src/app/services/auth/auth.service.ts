@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { TokenService } from '../token/token.service';
+import {IAuthBodyRequest} from "../../models";
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class AuthService {
 
   constructor(private http: HttpClient, private tokenService: TokenService, private route: Router) {}
 
-  login(email: string, password: string): Observable<any> {
-    return this.http.post<any>('/api/auth/login', { email, password }).pipe(
+  login(req: IAuthBodyRequest): Observable<any> {
+    return this.http.post<any>('/api/auth/login', req).pipe(
          tap((response) => {
             const token = response.access_token;
 

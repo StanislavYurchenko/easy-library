@@ -2,7 +2,7 @@
 
 <div class="wrapper">
 
-  <form [formGroup]="form" novalidate (ngSubmit)="signIn()">
+  <form [formGroup]="form" (ngSubmit)="signIn()">
 
 
     <easy-library-form-field label="Email" [required]="true" [control]="email" [patternError]="regexErrors.email">

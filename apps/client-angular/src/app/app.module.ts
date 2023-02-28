@@ -9,7 +9,7 @@ import { AppRoutingModule } from './app.routing.module';
 import { HeaderModule } from './pages';
 import { AuthInterceptor } from './interceptors';
 import { NotificationModule } from './services';
-import { ControlsModule } from './shared';
+import {ControlsModule, RatingModule} from './shared';
 import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
@@ -23,7 +23,8 @@ import {MatCardModule} from "@angular/material/card";
     HeaderModule,
     ControlsModule,
     NotificationModule.forRoot(),
-    MatCardModule
+    MatCardModule,
+    RatingModule
   ],
   providers: [
       {

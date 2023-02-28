@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {catchError, EMPTY} from 'rxjs';
+import { catchError, EMPTY } from 'rxjs';
 import { regex, regexErrors } from '../../shared/utils/regex';
 import { NotificationService } from '../../services/notification/notification.service';
-import { markFormGroupTouched } from '../../shared';
 import { AuthService } from '../../services';
-import {IAuthResponse} from "../../models";
+import { IAuthResponse } from '../../models';
 
 export type Value = number | string | boolean;
 export interface Icon {
@@ -43,43 +42,34 @@ export class AuthComponent {
             {
                updateOn: 'blur',
                validators: [Validators.required, Validators.minLength(3), Validators.pattern(regex.email)]
-        }
+            },
          ],
       password: [
             null,
             {
-               updateOn: 'blur',
+          updateOn: 'blur',
                validators: [Validators.required, Validators.pattern(regex.password)]
-        }
+            },
          ],
-    });
+      });
   }
 
   signIn(): void {
-
-    const email = String(this.form?.get('email')?.value);
-    const password = String(this.form?.get('password')?.value);
-    console.log('email', email);
+    console.log('email', this.form?.value);
 
     this.authService
-      .login(email, password)
+      .login(this.form?.value)
       .pipe(
         catchError(() => {
           this.onError();
 
           return EMPTY;
-      }))
+        }),
+      )
       .subscribe((res: IAuthResponse) => {
             localStorage.setItem('login', res.access_token);
             this.onSuccess();
          });
-  }
-
-  onPatchValue(): void {
-    this.form.patchValue({
-      input: 123,
-      password: 'qwerty',
-      });
   }
 
   onSuccess(): void {
