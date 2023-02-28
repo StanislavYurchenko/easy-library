@@ -10,11 +10,6 @@ export class ExtendedExceptionFilter implements ExceptionFilter {
     const request = context.getRequest<Request>();
     const status = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    console.log('ExtendedExceptionFilter');
-    console.log('exception', exception.name);
-    console.log('status', status);
-    console.log('exception', exception);
-
     let errorResponse: ApiErrRes;
 
     switch (exception.name) {
