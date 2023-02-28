@@ -19,13 +19,11 @@ export class AuthController {
   async login(@Req() req: RequestWithUser, @Res() response: Response<ApiRes<AccessToken>>) {
     Logger.log(`🚀 AuthController: User ${req.user.email} has been login successfully`);
 
-    return this.authService.login(req.user);
-
-    // return response.status(HttpStatus.OK).json({
-    //   statusCode: HttpStatus.OK,
-    //   message: 'User has been login successfully',
-    //   data: await this.authService.login(req.user),
-    // });
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: 'User has been login successfully',
+      data: await this.authService.login(req.user),
+    });
   }
 
   @ApiBody({ type: CreateUserDto })

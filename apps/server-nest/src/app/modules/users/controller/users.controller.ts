@@ -79,22 +79,15 @@ export class UsersController {
   @CheckAbilities(createUserAbility)
   @Post()
   async createUser(@Res() response: Response<ApiRes<IUser>>, @Body() createUserDto: CreateUserDto) {
-    try {
-      const newUser = await this.usersService.createUser(createUserDto);
+    const newUser = await this.usersService.createUser(createUserDto);
 
-      Logger.log(`🚀 UserController: User ${newUser.email} has been created successfully`);
+    Logger.log(`🚀 UserController: User ${newUser.email} has been created successfully`);
 
-      return response.status(HttpStatus.CREATED).json({
-        statusCode: HttpStatus.CREATED,
-        message: 'User has been created successfully',
-        data: newUser,
-      });
-    } catch (err: any) {
-      return response.status(HttpStatus.BAD_REQUEST).json({
-        statusCode: HttpStatus.BAD_REQUEST,
-        message: 'Error: User not created!',
-      });
-    }
+    return response.status(HttpStatus.CREATED).json({
+      statusCode: HttpStatus.CREATED,
+      message: 'User has been created successfully',
+      data: newUser,
+    });
   }
 
   @ApiBody({ type: UpdateUserDto })
@@ -111,23 +104,15 @@ export class UsersController {
     @Param('id') userId: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    try {
-      const existingUser = await this.usersService.updateUser(userId, updateUserDto, request.user);
+    const existingUser = await this.usersService.updateUser(userId, updateUserDto, request.user);
 
-      Logger.log(`🚀 UserController: User ${existingUser.email} has been updated successfully`);
+    Logger.log(`🚀 UserController: User ${existingUser.email} has been updated successfully`);
 
-      return response.status(HttpStatus.OK).json({
-        statusCode: HttpStatus.OK,
-        message: 'User has been successfully updated',
-        data: existingUser,
-      });
-    } catch (err: any) {
-      if (err instanceof ForbiddenError) {
-        throw new ForbiddenException(err.message);
-      }
-
-      return response.status(err.status).json(err.response);
-    }
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: 'User has been successfully updated',
+      data: existingUser,
+    });
   }
 
   @ApiOkResponse({ description: 'All users data found successfully' })
@@ -138,19 +123,15 @@ export class UsersController {
   @CheckAbilities(readUserAbility)
   @Get()
   async getUsers(@Res() response: Response<ApiRes<IUser[]>>) {
-    try {
-      const usersData = await this.usersService.getAllUsers();
+    const usersData = await this.usersService.getAllUsers();
 
-      Logger.log(`🚀 UserController: ${usersData.length} users has been got`);
+    Logger.log(`🚀 UserController: ${usersData.length} users has been got`);
 
-      return response.status(HttpStatus.OK).json({
-        statusCode: HttpStatus.OK,
-        message: 'All users data found successfully',
-        data: usersData,
-      });
-    } catch (err: any) {
-      return response.status(err.status).json(err.response);
-    }
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: 'All users data found successfully',
+      data: usersData,
+    });
   }
 
   @ApiOkResponse({ description: 'User found successfully' })
@@ -161,19 +142,15 @@ export class UsersController {
   @CheckAbilities(readUserAbility)
   @Get('/:id')
   async getUser(@Res() response: Response<ApiRes<IUser>>, @Param('id') userId: string) {
-    try {
-      const existingUser = await this.usersService.getUser(userId);
+    const existingUser = await this.usersService.getUser(userId);
 
-      Logger.log(`🚀 UserController: User ${existingUser.email} has been got`);
+    Logger.log(`🚀 UserController: User ${existingUser.email} has been got`);
 
-      return response.status(HttpStatus.OK).json({
-        statusCode: HttpStatus.OK,
-        message: 'User found successfully',
-        data: existingUser,
-      });
-    } catch (err: any) {
-      return response.status(err.status).json(err.response);
-    }
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: 'User found successfully',
+      data: existingUser,
+    });
   }
 
   @ApiOkResponse({ description: 'User deleted successfully' })
@@ -184,18 +161,14 @@ export class UsersController {
   @CheckAbilities(deleteUserAbility)
   @Delete('/:id')
   async deleteUser(@Res() response: Response<ApiRes<IUser>>, @Param('id') userId: string) {
-    try {
-      const deletedUser = await this.usersService.deleteUser(userId);
+    const deletedUser = await this.usersService.deleteUser(userId);
 
-      Logger.log(`🚀 UserController: User ${deletedUser.email} has been deleted`);
+    Logger.log(`🚀 UserController: User ${deletedUser.email} has been deleted`);
 
-      return response.status(HttpStatus.OK).json({
-        statusCode: HttpStatus.OK,
-        message: 'User deleted successfully',
-        data: deletedUser,
-      });
-    } catch (err: any) {
-      return response.status(err.status).json(err.response);
-    }
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: 'User deleted successfully',
+      data: deletedUser,
+    });
   }
 }

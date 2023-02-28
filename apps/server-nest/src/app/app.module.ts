@@ -12,10 +12,10 @@ import { UsersModule, ReviewsModule, BooksModule, AuthModule } from './modules';
   controllers: [AppController],
   providers: [
     AppService,
-    // {
-    //   provide: APP_FILTER,
-    //   useClass: ExtendedExceptionFilter,
-    // },
+    {
+      provide: APP_FILTER,
+      useClass: ExtendedExceptionFilter,
+    },
     // {
     //   provide: APP_PIPE,
     //   useClass: ValidationPipe,

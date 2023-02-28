@@ -34,7 +34,7 @@ export class UsersService {
     const ability = this.abilityFactory.defineAbility(currentUser);
     const userToUpdate = new User(await this.getUser(userId));
 
-    ForbiddenError.from(ability).setMessage('it is forbidden for you').throwUnlessCan(Actions.Update, userToUpdate);
+    ForbiddenError.from(ability).throwUnlessCan(Actions.Update, userToUpdate);
 
     const existingUser = await this.userModel.findByIdAndUpdate(userId, updateUserDto, { new: true });
 

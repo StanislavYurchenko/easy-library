@@ -12,5 +12,5 @@ export type ApiErrRes = {
 };
 
 export interface AccessToken {
-  access_token: string;
+  accessToken: string;
 }

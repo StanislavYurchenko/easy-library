@@ -18,31 +18,64 @@ export class ExtendedExceptionFilter implements ExceptionFilter {
     let errorResponse: ApiErrRes;
 
     switch (exception.name) {
-      case 'Unauthorized': {
+      case 'ForbiddenError': {
         errorResponse = {
-          statusCode: HttpStatus.UNAUTHORIZED,
+          statusCode: status,
+          message: exception.message,
+          timestamp: new Date().toISOString(),
+          path: request.url,
+        };
+        Logger.error(`🚀 ForbiddenError: ${exception.message}, Timestamp:  ${errorResponse.timestamp}`);
+        break;
+      }
+
+      case 'ForbiddenException': {
+        errorResponse = {
+          statusCode: status,
+          message: exception.message,
+          timestamp: new Date().toISOString(),
+          path: request.url,
+        };
+        Logger.error(`🚀 ForbiddenException: ${exception.message}, Timestamp:  ${errorResponse.timestamp}`);
+        break;
+      }
+
+      case 'BadRequestException': {
+        errorResponse = {
+          statusCode: status,
+          message: exception.response.message,
+          timestamp: new Date().toISOString(),
+          path: request.url,
+        };
+        Logger.error(`🚀 BadRequestException: ${exception.message}, Timestamp:  ${errorResponse.timestamp}`);
+        break;
+      }
+
+      case 'UnauthorizedException': {
+        errorResponse = {
+          statusCode: status,
           message: 'Unauthorized',
           timestamp: new Date().toISOString(),
           path: request.url,
         };
-        Logger.error(`🚀 Unauthorized: ${exception.message}, Timestamp:  ${errorResponse.timestamp}`);
+        Logger.error(`🚀 UnauthorizedException: ${exception.message}, Timestamp:  ${errorResponse.timestamp}`);
         break;
       }
 
       case 'NotFoundException': {
         errorResponse = {
-          statusCode: HttpStatus.NOT_FOUND,
-          message: 'Not Found',
+          statusCode: status,
+          message: exception.message,
           timestamp: new Date().toISOString(),
           path: request.url,
         };
-        Logger.error(`🚀 MongoServerError: ${exception.message}, Timestamp:  ${errorResponse.timestamp}`);
+        Logger.error(`🚀 NotFoundException: ${exception.message}, Timestamp:  ${errorResponse.timestamp}`);
         break;
       }
 
       case 'MongoServerError': {
         errorResponse = {
-          statusCode: HttpStatus.BAD_REQUEST,
+          statusCode: status,
           message: 'Bad Request',
           timestamp: new Date().toISOString(),
           path: request.url,
@@ -53,7 +86,7 @@ export class ExtendedExceptionFilter implements ExceptionFilter {
 
       default: {
         errorResponse = {
-          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          statusCode: status,
           message: 'Internal Error',
           timestamp: new Date().toISOString(),
           path: request.url,
