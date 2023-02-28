@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { hash } from 'bcrypt';
@@ -24,6 +24,7 @@ export class UsersService {
     createUserDto.password = hashedPassword;
 
     const newUser = await new this.userModel(createUserDto).save();
+
     const { password, ...user } = newUser.toObject();
 
     return user;
@@ -33,7 +34,7 @@ export class UsersService {
     const ability = this.abilityFactory.defineAbility(currentUser);
     const userToUpdate = new User(await this.getUser(userId));
 
-    ForbiddenError.from(ability).setMessage('it is forbidden for you').throwUnlessCan(Actions.Update, userToUpdate);
+    ForbiddenError.from(ability).throwUnlessCan(Actions.Update, userToUpdate);
 
     const existingUser = await this.userModel.findByIdAndUpdate(userId, updateUserDto, { new: true });
 

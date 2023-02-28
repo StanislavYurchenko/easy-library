@@ -61,19 +61,15 @@ export class ReviewsController {
     @Param('id') bookId: string,
     @Body() updateReviewDto: UpdateReviewUserIdListDto,
   ) {
-    try {
-      const existingReview = await this.reviewsService.updateReviewUserIdList(bookId, updateReviewDto);
+    const existingReview = await this.reviewsService.updateReviewUserIdList(bookId, updateReviewDto);
 
-      Logger.log(`🚀 ReviewsController: Review ${existingReview.id} has been updated successfully`);
+    Logger.log(`🚀 ReviewsController: Review ${existingReview.id} has been updated successfully`);
 
-      return response.status(HttpStatus.OK).json({
-        statusCode: HttpStatus.OK,
-        message: 'Review has been successfully updated',
-        data: existingReview,
-      });
-    } catch (err: any) {
-      return response.status(err.status).json(err.response);
-    }
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: 'Review has been successfully updated',
+      data: existingReview,
+    });
   }
 
   @ApiBody({ type: CreateReviewDto })
@@ -84,19 +80,15 @@ export class ReviewsController {
   @CheckAbilities(createReviewAbility)
   @Post()
   async createReview(@Res() response: Response<ApiRes<IReview>>, @Body() createReviewDto: CreateReviewDto) {
-    try {
-      const newReview = await this.reviewsService.createReview(createReviewDto);
+    const newReview = await this.reviewsService.createReview(createReviewDto);
 
-      Logger.log(`🚀 ReviewController: Review ${newReview.id} has been created successfully`);
+    Logger.log(`🚀 ReviewController: Review ${newReview.id} has been created successfully`);
 
-      return response.status(HttpStatus.CREATED).json({
-        statusCode: HttpStatus.CREATED,
-        message: 'Review has been created successfully',
-        data: newReview,
-      });
-    } catch (err: any) {
-      return response.status(err.status).json(err.response);
-    }
+    return response.status(HttpStatus.CREATED).json({
+      statusCode: HttpStatus.CREATED,
+      message: 'Review has been created successfully',
+      data: newReview,
+    });
   }
 
   @ApiBody({ type: UpdateReviewDto })
@@ -113,23 +105,15 @@ export class ReviewsController {
     @Param('id') reviewId: string,
     @Body() updateReviewDto: UpdateReviewDto,
   ) {
-    try {
-      const existingReview = await this.reviewsService.updateReview(reviewId, updateReviewDto, request.user);
+    const existingReview = await this.reviewsService.updateReview(reviewId, updateReviewDto, request.user);
 
-      Logger.log(`🚀 ReviewsController: Review ${existingReview.id} has been updated successfully`);
+    Logger.log(`🚀 ReviewsController: Review ${existingReview.id} has been updated successfully`);
 
-      return response.status(HttpStatus.OK).json({
-        statusCode: HttpStatus.OK,
-        message: 'Review has been successfully updated',
-        data: existingReview,
-      });
-    } catch (err: any) {
-      if (err instanceof ForbiddenError) {
-        throw new ForbiddenException(err.message);
-      }
-
-      return response.status(err.status).json(err.response);
-    }
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: 'Review has been successfully updated',
+      data: existingReview,
+    });
   }
 
   @ApiOkResponse({ description: 'All reviews data found successfully' })
@@ -140,19 +124,15 @@ export class ReviewsController {
   @CheckAbilities(readReviewAbility)
   @Get()
   async getReviews(@Res() response: Response<ApiRes<IReview[]>>) {
-    try {
-      const reviewsData = await this.reviewsService.getAllReviews();
+    const reviewsData = await this.reviewsService.getAllReviews();
 
-      Logger.log(`🚀 ReviewController: ${reviewsData.length} reviews has been got`);
+    Logger.log(`🚀 ReviewController: ${reviewsData.length} reviews has been got`);
 
-      return response.status(HttpStatus.OK).json({
-        statusCode: HttpStatus.OK,
-        message: 'All reviews data found successfully',
-        data: reviewsData,
-      });
-    } catch (err: any) {
-      return response.status(err.status).json(err.response);
-    }
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: 'All reviews data found successfully',
+      data: reviewsData,
+    });
   }
 
   @ApiOkResponse({ description: 'Review found successfully' })
@@ -163,19 +143,15 @@ export class ReviewsController {
   @CheckAbilities(readReviewAbility)
   @Get('/:id')
   async getReview(@Res() response: Response<ApiRes<IReview>>, @Param('id') reviewId: string) {
-    try {
-      const existingReview = await this.reviewsService.getReview(reviewId);
+    const existingReview = await this.reviewsService.getReview(reviewId);
 
-      Logger.log(`🚀 ReviewController: Review ${existingReview.id} has been got`);
+    Logger.log(`🚀 ReviewController: Review ${existingReview.id} has been got`);
 
-      return response.status(HttpStatus.OK).json({
-        statusCode: HttpStatus.OK,
-        message: 'Review found successfully',
-        data: existingReview,
-      });
-    } catch (err: any) {
-      return response.status(err.status).json(err.response);
-    }
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: 'Review found successfully',
+      data: existingReview,
+    });
   }
 
   @ApiOkResponse({ description: 'Review deleted successfully' })
@@ -186,18 +162,14 @@ export class ReviewsController {
   @CheckAbilities(deleteReviewAbility)
   @Delete('/:id')
   async deleteReview(@Res() response: Response<ApiRes<IReview>>, @Param('id') reviewId: string) {
-    try {
-      const deletedReview = await this.reviewsService.deleteReview(reviewId);
+    const deletedReview = await this.reviewsService.deleteReview(reviewId);
 
-      Logger.log(`🚀 ReviewController: Review ${deletedReview.id} has been deleted`);
+    Logger.log(`🚀 ReviewController: Review ${deletedReview.id} has been deleted`);
 
-      return response.status(HttpStatus.OK).json({
-        statusCode: HttpStatus.OK,
-        message: 'Review deleted successfully',
-        data: deletedReview,
-      });
-    } catch (err: any) {
-      return response.status(err.status).json(err.response);
-    }
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: 'Review deleted successfully',
+      data: deletedReview,
+    });
   }
 }
