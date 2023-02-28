@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { catchError, EMPTY } from 'rxjs';
+import {catchError, EMPTY, Subscription} from 'rxjs';
 import { regex, regexErrors } from '../../shared/utils/regex';
 import { NotificationService } from '../../services/notification/notification.service';
 import { AuthService } from '../../services';
@@ -21,9 +21,11 @@ export interface ControlItem {
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
 })
-export class AuthComponent {
+export class AuthComponent implements OnDestroy {
   form!: FormGroup;
   regexErrors = regexErrors;
+
+  private readonly subscription = new Subscription();
 
   get email(): AbstractControl<any, any> | null {
     return this.form?.get('email');
@@ -57,7 +59,7 @@ export class AuthComponent {
   signIn(): void {
     console.log('email', this.form?.value);
 
-    this.authService
+    const authSub = this.authService
       .login(this.form?.value)
       .pipe(
         catchError(() => {
@@ -70,6 +72,8 @@ export class AuthComponent {
             localStorage.setItem('login', res.access_token);
             this.onSuccess();
          });
+
+    this.subscription.add(authSub);
   }
 
   onSuccess(): void {
@@ -78,5 +82,9 @@ export class AuthComponent {
 
   onError(): void {
     this.notification.error('Oops! Something is wrong');
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
