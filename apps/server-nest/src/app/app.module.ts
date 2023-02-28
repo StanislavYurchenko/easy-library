@@ -16,10 +16,10 @@ import { UsersModule, ReviewsModule, BooksModule, AuthModule } from './modules';
       provide: APP_FILTER,
       useClass: ExtendedExceptionFilter,
     },
-    // {
-    //   provide: APP_PIPE,
-    //   useClass: ValidationPipe,
-    // },
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
   ],
 })
 export class AppModule {}
