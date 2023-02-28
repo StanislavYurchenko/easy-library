@@ -2,5 +2,15 @@ export type ApiRes<D> = {
   readonly statusCode: number;
   readonly message: string;
   readonly data?: D;
-  readonly error?: any;
+}
+
+export type ApiErrRes = {
+  readonly statusCode: number;
+  readonly message: string;
+  readonly timestamp: string;
+  readonly path: string;
+};
+
+export interface AccessToken {
+  access_token: string;
 }
