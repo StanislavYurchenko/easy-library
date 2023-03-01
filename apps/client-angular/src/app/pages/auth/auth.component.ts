@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { catchError, EMPTY, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { regex, regexErrors } from '../../shared/utils/regex';
 import { NotificationService } from '../../services/notification/notification.service';
 import { AuthService } from '../../services';
-import { IAuthResponse } from '../../models';
 
 export type Value = number | string | boolean;
 export interface Icon {
@@ -57,32 +56,9 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   signIn(): void {
-    // eslint-disable-next-line no-console
-    console.log('email', this.form?.value);
-
-    const authSub = this.authService
-      .login(this.form?.value)
-      .pipe(
-        catchError(() => {
-          this.onError();
-
-          return EMPTY;
-        }),
-      )
-      .subscribe((res: IAuthResponse) => {
-        localStorage.setItem('login', res.access_token);
-        this.onSuccess();
-      });
+    const authSub = this.authService.login(this.form?.value).subscribe();
 
     this.subscription.add(authSub);
-  }
-
-  onSuccess(): void {
-    this.notification.success('Everything is fine!');
-  }
-
-  onError(): void {
-    this.notification.error('Oops! Something is wrong');
   }
 
   ngOnDestroy(): void {
