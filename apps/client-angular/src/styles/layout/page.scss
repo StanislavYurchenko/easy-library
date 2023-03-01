@@ -1,27 +1,57 @@
 .app-page {
-
-    max-width: 900px;
-    margin: 16px auto;
-     
+    margin: 0 auto;
     background: $base-light;
     border: 1px solid $base-dark;
     border-radius: 8px;
-    padding: 32px;
-  
-    position: relative;
-    
+    padding: 0;
+
     &__header {
-      margin-bottom: 32px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      width: 100%;
       text-align: center;
+      height: 64px;
     }
-  
-    &__content {
-  
+
+    .header {
+      &__title {
+        font-size: 1.2em;
+        width: 100%;
+        display: flex;
+        align-items: unset;
+        justify-content: space-between;
+      }
     }
-  
+
+    &__main {
+      flex: 1;
+      padding: 10px;
+      margin-top: 64px;
+      min-height: calc(100vh - 64px - 90px);
+    }
+
     &__footer {
-      margin-top: 32px;
+      height: 88px;
+      width: 100%;
       display: flex;
-      justify-content: flex-end;
+      flex-direction: column-reverse;
+      padding: 10px;
+      color: #fafafb;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.5rem;
+      background-color: #3f3a3a;
+      &-copyright {
+        font-size: 0.8rem;
+        color: darkturquoise;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+      &-disclaimer {
+        font-weight: lighter;
+        padding-bottom: 1.5rem;
+      }
     }
 }

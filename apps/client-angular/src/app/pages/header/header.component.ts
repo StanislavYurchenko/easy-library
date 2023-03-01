@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { NavigatorService } from '../../services';
 
 @Component({
   selector: 'easy-library-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
+  constructor(private nav: NavigatorService) {}
 
-  constructor() { }
-
-  ngOnInit(): void {
+  get navigator(): NavigatorService {
+    return this.nav;
   }
-
 }

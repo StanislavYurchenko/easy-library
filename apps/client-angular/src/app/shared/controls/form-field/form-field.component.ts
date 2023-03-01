@@ -1,12 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'easy-library-form-field',
   templateUrl: './form-field.component.html',
-  styleUrls: ['./form-field.component.scss']
+  styleUrls: ['./form-field.component.scss'],
 })
-export class FormFieldComponent implements OnInit {
+export class FormFieldComponent {
   @Input() label!: string;
   @Input() required = true;
   @Input() isInline = true;
@@ -14,10 +14,8 @@ export class FormFieldComponent implements OnInit {
   @Input() patternError!: string;
 
   constructor() {
-     this.isInline = true;
+    this.isInline = true;
   }
-
-  ngOnInit(): void {}
 
   hasError(): boolean | null {
     return this.control && this.control.invalid && this.control.touched;

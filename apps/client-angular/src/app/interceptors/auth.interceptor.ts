@@ -10,11 +10,12 @@ export class AuthInterceptor implements HttpInterceptor {
     if (this.authService.isAuthenticated()) {
       const token = this.tokenService.getToken();
 
+      // eslint-disable-next-line no-param-reassign
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`,
         },
-         });
+      });
     }
 
     return next.handle(request);

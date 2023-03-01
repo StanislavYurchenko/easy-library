@@ -13,7 +13,7 @@ export class RatingComponent implements OnInit {
   ratingArr: number[] = [];
 
   ngOnInit() {
-     for (let index = 0; index < STAR_COUNT; index++) {
+    for (let index = 0; index < STAR_COUNT; index++) {
       this.ratingArr.push(index);
     }
   }
@@ -23,10 +23,10 @@ export class RatingComponent implements OnInit {
 
     rating = Math.ceil(rating / (this.starCount / STAR_COUNT));
 
-     if (rating >= index + 1) {
-        return 'star';
-     }
+    if (rating >= index + 1) {
+      return 'star';
+    }
 
-     return 'star_border';
+    return 'star_border';
   }
 }

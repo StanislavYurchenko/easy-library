@@ -5,7 +5,7 @@ export type ButtonType = 'button' | 'submit';
 @Component({
   selector: 'easy-library-button',
   templateUrl: './button.component.html',
-  styleUrls: ['./button.component.scss']
+  styleUrls: ['./button.component.scss'],
 })
 export class ButtonComponent {
   @Input() type: ButtonType;

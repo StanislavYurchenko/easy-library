@@ -7,15 +7,15 @@ const TOKEN_KEY = 'auth_token';
 })
 @Injectable()
 export class TokenService {
-   getToken(): string | null {
-      return localStorage.getItem(TOKEN_KEY);
-   }
+  getToken(): string | null {
+    return localStorage.getItem(TOKEN_KEY);
+  }
 
-   setToken(token: string): void {
-      localStorage.setItem(TOKEN_KEY, token);
-   }
+  setToken(token: string): void {
+    localStorage.setItem(TOKEN_KEY, token);
+  }
 
-   removeToken(): void {
-      localStorage.removeItem(TOKEN_KEY);
-   }
+  removeToken(): void {
+    localStorage.removeItem(TOKEN_KEY);
+  }
 }

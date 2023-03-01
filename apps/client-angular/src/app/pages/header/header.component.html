@@ -1,6 +1,8 @@
-<div class="header">
-  <div class="header__title">Easy Library</div>
-  <div class="header__navigation">
-    <a class="app-a" [routerLink]="['auth', 'login']" routerLinkActive="app-a_active">Sign In</a>
-  </div>
-</div>
+<mat-toolbar class="toolbar app-page__header mat-elevation-z1">
+  <mat-toolbar-row class="toolbar-container">
+    <div class="header__title">Easy Library</div>
+    <div class="header__navigation">
+      <a class="app-a" (click)="navigator.goSignIn()" routerLinkActive="app-a_active">Sign In</a>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
