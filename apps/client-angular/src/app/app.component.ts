@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,13 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  title = 'client-angular';
-  dataFromServer = '';
-
-  constructor(private readonly http: HttpClient) {}
-
-  getData() {
-    this.http.get<{ message: string }>('/api').subscribe(({ message }) => (this.dataFromServer = message));
-  }
-}
+export class AppComponent {}
