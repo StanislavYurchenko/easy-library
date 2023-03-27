@@ -1,0 +1,20 @@
+<h2>Form</h2>
+
+<div class="wrapper">
+
+  <form [formGroup]="form" (ngSubmit)="signIn()">
+
+
+    <easy-library-form-field label="Email" [required]="true" [control]="email" [patternError]="regexErrors.email">
+      <easy-library-input formControlName="email"></easy-library-input>
+    </easy-library-form-field>
+
+    <easy-library-form-field label="Password" [required]="true" [control]="password" [patternError]="regexErrors.password">
+      <easy-library-password formControlName="password"></easy-library-password>
+    </easy-library-form-field>
+
+    <br /><br /><br />
+    <easy-library-button type="submit" >Sign In</easy-library-button>
+
+  </form>
+</div>
