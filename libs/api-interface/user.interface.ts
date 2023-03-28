@@ -6,3 +6,5 @@ export interface User {
   readonly phone?: string;
   readonly isAdmin?: boolean;
 }
+
+export type Login = Pick<User, 'email' | 'password'>;

@@ -14,6 +14,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Login from '../Login/Login';
 
 interface NavItem {
   label: string;
@@ -80,6 +81,7 @@ export default function AppRoot() {
                 {item.label}
               </Button>
             ))}
+            <Login />
           </Box>
         </Toolbar>
       </AppBar>
