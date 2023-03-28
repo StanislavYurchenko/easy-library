@@ -24,6 +24,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-export default function App() {
+export default function App(): JSX.Element {
   return <RouterProvider router={router} />;
 }

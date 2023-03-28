@@ -10,3 +10,5 @@ export const swaggerConfig: Omit<OpenAPIObject, 'paths'> = new DocumentBuilder()
   .addTag(ApiEndpoints.reviews)
   .addBearerAuth()
   .build();
+
+export const allowCorsList = process.env.NODE_ENV === 'development' ? ['http://localhost:4200'] : [];

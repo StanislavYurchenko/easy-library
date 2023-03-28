@@ -6,35 +6,14 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { Book } from '@libs/api-interface';
 import { getBooks } from '../../services/api';
 
-const b: Book[] = [
-  {
-    id: '1',
-    title: 'book 1',
-    author: 'author 1',
-    description: 'description 1',
-  },
-  {
-    id: '2',
-    title: 'book 2',
-    author: 'author 2',
-    description: 'description 2',
-  },
-  {
-    id: '3',
-    title: 'book 3',
-    author: 'author 3',
-    description: 'description 3',
-  },
-];
-
-export default function BookList() {
+export default function BookList(): JSX.Element {
   const [books, setBooks] = useState<Book[]>([]);
 
   useEffect(() => {
     getBooks().then(bookList => setBooks(bookList));
   }, []);
 
-  const handleClick = () => {
+  const handleClick = (): void => {
     getBooks();
   };
 
