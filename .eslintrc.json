@@ -67,7 +67,7 @@
     ],
     "no-unused-vars": "off",
     "no-use-before-define": ["error", { "classes": false }],
-    "comma-dangle": ["error", "never"],
+    "comma-dangle": ["error", "always-multiline"],
     "no-prototype-builtins": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
@@ -166,7 +166,7 @@
         "ignorePattern": "^import [^,]+ from |^export | implements"
       }
     ],
-    "indent": ["error", 3],
+    "indent": ["error", 2],
     "no-param-reassign": [
       "error",
       {
