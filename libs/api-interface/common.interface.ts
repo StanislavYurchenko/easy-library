@@ -10,7 +10,6 @@ export type ApiErrRes = {
   readonly timestamp: string;
   readonly path: string;
 };
-
 export interface AccessToken {
   accessToken: string;
 }
